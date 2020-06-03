@@ -1,6 +1,8 @@
-### Start project Django in Linux
+### Some command lines using in django project
 
-#### Virtual enviroment setup
+#### Django project deployement
+
+##### Virtual enviroment setup
 
 - Make sure we installed python3 and virtualenv
 
@@ -26,7 +28,11 @@
   deactivate
   ```
 
-#### Django install and setup
+##### Django install and setup
+
+<span style="color:red">
+Attention: Always using python3 manage.py ... in virtual enviroment (source lenv/bin/activate
+</span>
 
 - Install globally
 
@@ -64,20 +70,18 @@
   python3 manage.py miragrations
   ```
 
-#### Change in settings.py global of project
+#### Urls templates in Django project
 
-- urls.py global: Define roots parents of project
+##### Create container (pages, lists, users ....)
 
-  ```python
-  urlpatterns = [
-    path('', include('pages.urls')),
-    path('listings/', include('listings.urls')),
-    path('admin/', admin.site.urls),
-  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+- Using startapp
+  ```bash
+  python3 manage.py startapp pages
+  python3 manage.py startapp realtors
+  python3 manage.py startapp listings
   ```
+- After created those container folder, we must config the apps of them in the INSTALLED_APPS in the settings global of project
 
-- Add some configs of project in INSTALLED_APPS
   ```python
   INSTALLED_APPS = [
     'pages.apps.PagesConfig',
@@ -90,4 +94,24 @@
     'django.contrib.messages',
     'django.contrib.staticfiles',
   ]
+  ```
+
+  <span style="color:cyan">
+  The names: PagesConfig, ListingsConfig, RealtorsConfig are the name of apps
+
+  We can find them in : pages/apps - listings/apps - realtors/apps
+  </span>
+
+- In each folder container, we create a urls.py file, that contains urls of site
+  and urls.py file in folder of project contains roots of these urls
+
+* urls.py global: Define roots parents of project
+
+  ```python
+  urlpatterns = [
+    path('', include('pages.urls')),
+    path('listings/', include('listings.urls')),
+    path('admin/', admin.site.urls),
+  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
   ```
