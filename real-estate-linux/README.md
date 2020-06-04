@@ -332,3 +332,19 @@
   ```bash
   python3 manage.py accounts
   ```
+  By default Django create a table auth_user for us in database. So we don't need create a new one.
+- Create templates login, register, dasboard
+- Logout in Django
+  ```python
+  # accounts/view.py
+  def logout(request):
+    return redirect('index')
+  ```
+- CSRF token
+  It's can be very simple implemented in Django project
+  ```html
+  <form action="{% url 'login' %}" method='POST'>
+    {% csrf_token %}
+    <div>Content of form</div>
+  </form>
+  ```

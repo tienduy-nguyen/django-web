@@ -28,11 +28,3 @@ def about(request):
         'mvp_realtors': mvp_realtors
     }
     return render(request, 'pages/about.html', context)
-
-
-def login(request):
-    return render(request, 'auth/login.html')
-
-
-def register(request):
-    return render(request, 'auth/register.html')
