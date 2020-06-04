@@ -1,8 +1,8 @@
-### Some command lines using in django project
+## Notes of steps when I learned create web app with Django (For Linux system)
 
-#### Django project deployement
+### Django project deployement
 
-##### Virtual enviroment setup
+#### Virtual enviroment setup
 
 - Make sure we installed python3 and virtualenv
 
@@ -19,7 +19,7 @@
 - Activating a virtual enviroment
 
   ```bash
-  source env/bin/activate
+  source lenv/bin/activate
   ```
 
 - Leaving the virtual enviroment
@@ -28,19 +28,19 @@
   deactivate
   ```
 
-##### Django install and setup
+#### Django install and setup
 
-  <span style="color:red">
-  Attention: Always using python3 manage.py ... in virtual enviroment (source lenv/bin/activate
-  </span>
+![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)
+  `Attention: Always using python3 manage.py ... in virtual enviroment (source lenv/bin/activate)`
 
-- Install globally
+
+- Install globally (without virtual enviroment)
 
   ```bash
   sudo apt install python3-django
   ```
 
-- Install
+- Install in virtual enviroment
 
   ```bash
   pip3 install django
@@ -71,9 +71,9 @@
   python3 manage.py miragrations
   ```
 
-#### Urls templates in Django project
+### Urls templates in Django project
 
-##### Create container (pages, lists, users ....)
+#### Create container (pages, lists, users ....)
 
 - Using startapp
   
@@ -138,7 +138,7 @@
   ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
   ```
-##### Create Model
+#### Create Model
 - Pre-install (in virtual enviroment) to connect with postgresql
   
   ```bash
@@ -179,7 +179,7 @@
   ```bash
   python3 manage.py createsuperuser
   ```
-##### Data in admin page
+#### Data in admin page
 
 - Now we put models in the admin.py file
    
@@ -241,7 +241,7 @@
 
   admin.site.register(Realtor, RealtorAdmin)
   ```
-##### Display data in root page
+#### Display data in root page from model database
 
 - Pull data from models
   
@@ -257,4 +257,78 @@
     }
     return render(request, 'listings/listings.html',context)
 
+  ```
+- Make the homepage listings dynamic
+  Do the same like we do in with listings and realtors
+
+- Get listing by id from model
+
+  >Using get_object_or_404
+  ```python
+  #listings/views.py
+  from django.shortcuts import render, get_object_or_404
+  from django.http import HttpResponse
+  from .models import Listing
+
+  def listing(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
+    context = {
+        'listing': listing,
+    }
+    return render(request, 'listings/listing.html', context)
+  ```
+- Search in python
+  
+  ```python
+  # listings/view.py
+  def search(request):
+    queryset_list = Listing.objects.order_by('-list_date')
+
+    # keyword
+    if 'keywords' in request.GET:
+        keywords = request.GET['keywords']
+        if keywords:
+            queryset_list = queryset_list.filter(
+                description__icontains=keywords)
+    # city
+    if 'city' in request.GET:
+        city = request.GET['city']
+        if city:
+            queryset_list = queryset_list.filter(
+                city__iexact=city)  # accept case sensitive
+    # state
+    if 'state' in request.GET:
+        state = request.GET['state']
+        if state:
+            queryset_list = queryset_list.filter(
+                state__iexact=state)
+    # bedrooms
+    if 'bedrooms' in request.GET:
+        bedrooms = request.GET['bedrooms']
+        if bedrooms:
+            queryset_list = queryset_list.filter(
+                bedrooms__lte=bedrooms)  # less than
+    # price
+    if 'price' in request.GET:
+        price = request.GET['price']
+        if price:
+            queryset_list = queryset_list.filter(
+                price__lte=price)  # less than
+
+    context = {
+        'bedroom_choices': bedroom_choices,
+        'state_choices': state_choices,
+        'price_choices': price_choices,
+        'listings': queryset_list,
+        'value': request.GET
+    }
+    return render(request, 'listings/search.html', context)
+  ```
+
+### Authentication in Django project
+
+#### Account apps and urls
+- Create a container app: accounts
+  ```bash
+  python3 manage.py accounts
   ```
