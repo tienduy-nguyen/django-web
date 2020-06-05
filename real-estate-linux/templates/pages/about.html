@@ -2,6 +2,7 @@
 
 {% block content %}
 {% load static %}
+{% block title %} | About{% endblock %}
 <section id="showcase-inner" class="py-5 text-white">
   <div class="container">
     <div class="row text-center">
@@ -43,25 +44,25 @@
       <div class="col-md-4">
         <div class="card">
           <img class="card-img-top" src="{% static 'img/realtors/kyle.jpg' %}" alt="Seller of the month">
-        <div class="card-body">
-          <h5 class="card-title">Seller Of The Month</h5>
+          <div class="card-body">
+            <h5 class="card-title">Seller Of The Month</h5>
             {% if mvp_realtors %}
-              {% for mvp in mvp_realtors %}
-                <h6 class="text-secondary">{{mvp.name}}</h6>
-                <p class="card-text">{{mvp.description | truncatewords:15}}
-                </p>
-              {% endfor%}
+            {% for mvp in mvp_realtors %}
+            <h6 class="text-secondary">{{mvp.name}}</h6>
+            <p class="card-text">{{mvp.description | truncatewords:15}}
+            </p>
+            {% endfor%}
             {% else %}
-              <div class='col-md-12 col-lg-12'>
+            <div class='col-md-12 col-lg-12'>
               No MVP Realtor of the month available
-              </div>
+            </div>
             {% endif %}
 
-         
+
+          </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 </section>
 
@@ -79,22 +80,22 @@
     <h2 class="text-center">Our Team</h2>
     <div class="row text-center">
       {% if realtors%}
-        {% for realtor in realtors%}
-           <div class="col-md-4">
-           <img src={{realtor.photo.url}} alt='' class="rounded-circle mb-3"></img>
-          <h4>{{realtor.name}}</h4>
-          <p class="text-success">Realtor</p>
-          <hr>
-          <p>
-            <i class="fas fa-phone"></i> {{realtor.phone}}</p>
-          <p>
-            <i class="fas fa-envelope-open"></i> {{realtor.email}}</p>
-        </div>
-        {% endfor%}
+      {% for realtor in realtors%}
+      <div class="col-md-4">
+        <img src={{realtor.photo.url}} alt='' class="rounded-circle mb-3"></img>
+        <h4>{{realtor.name}}</h4>
+        <p class="text-success">Realtor</p>
+        <hr>
+        <p>
+          <i class="fas fa-phone"></i> {{realtor.phone}}</p>
+        <p>
+          <i class="fas fa-envelope-open"></i> {{realtor.email}}</p>
+      </div>
+      {% endfor%}
       {% else %}
-        <div class='col-md-12 col-lg-12'>
-          No Realtor available
-        </div>
+      <div class='col-md-12 col-lg-12'>
+        No Realtor available
+      </div>
       {% endif%}
     </div>
   </div>

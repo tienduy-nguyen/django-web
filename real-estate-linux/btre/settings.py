@@ -1,3 +1,4 @@
+from django.contrib.messages import constants as messages
 import os
 import environ
 env = environ.Env(
@@ -130,3 +131,9 @@ STATICFILES_DIRS = [
 # Media folder settings
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+# Message
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+}

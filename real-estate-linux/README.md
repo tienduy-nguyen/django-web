@@ -1,5 +1,8 @@
 ## Notes of steps when I learned create web app with Django (For Linux system)
 
+We can learn all the details in [Django Documentation Official](https://docs.djangoproject.com/en/3.0/)
+
+
 ### Django project deployement
 
 #### Virtual enviroment setup
@@ -334,17 +337,78 @@
   ```
   By default Django create a table auth_user for us in database. So we don't need create a new one.
 - Create templates login, register, dasboard
-- Logout in Django
-  ```python
-  # accounts/view.py
-  def logout(request):
-    return redirect('index')
-  ```
+
 - CSRF token
-  It's can be very simple implemented in Django project
+  It's very simple implemented in Django project
   ```html
   <form action="{% url 'login' %}" method='POST'>
     {% csrf_token %}
     <div>Content of form</div>
   </form>
+  ```
+- Enabling messages in Django
+  ```python
+  # add in to settings.py file config of project
+  from django.contrib.messages import constants as messages
+  MESSAGE_TAGS = {
+    messages.ERROR: 'danger',
+  }
+  ```
+
+  How to user these messages in view?
+   ```python
+  # contacts/views.py
+  def login(request):
+    if request.method == 'POST':
+      messages.error(request, 'Testing error message')
+      return redirect('login')
+    else:
+      return render(request, 'auth/login.html')
+
+   ```
+  Some methods of messages provide by Django:
+   ```python
+  messages.debug(request, '%s SQL statements were executed.' % count)
+  messages.info(request, 'Three credits remain in your account.')
+  messages.success(request, 'Profile details updated.')
+  messages.warning(request, 'Your account expires in three days.')
+  messages.error(request, 'Document deleted.')
+   ```
+
+- Displaying messages in template view
+  ```html
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+  ```
+- Login in Django
+  
+  ```python
+  def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request, 'You are now logged in')
+            return redirect('dashboard')
+        else:
+            messages.error(request, 'Invalid credentials')
+            return redirect('login')
+    else:
+        return render(request, 'auth/login.html')
+  ```
+- Logout in Django
+  ```python
+  # accounts/view.py
+  def logout(request):
+    if request.method == 'POST':
+        auth.logout(request)
+        messages.success(request, 'You are now logged out')
+        return redirect('index')
   ```
