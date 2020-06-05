@@ -11,3 +11,7 @@ urlpatterns = [
     path('listings/', include('listings.urls')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+admin.site.site_header = 'Admin Panel'
+admin.site.site_title = 'Admin Page'
