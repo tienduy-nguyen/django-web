@@ -31,6 +31,9 @@ img {
 .social a:hover i {
   transform: scale(0.95);
 }
+.img-house {
+  height: 230px !important;
+}
 
 #showcase {
   background: url(../img/showcase.jpg) no-repeat top center fixed/cover;
