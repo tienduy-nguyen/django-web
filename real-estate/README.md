@@ -31,8 +31,8 @@
 
 ##### Django install and setup
 
-  ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)
-  `Attention: Always using python manage.py ... in virtual enviroment (activate.bat)`
+![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)
+`Attention: Always using python manage.py ... in virtual enviroment (activate.bat)`
 
 - Start project with django-admin
 
@@ -64,4 +64,8 @@
   python manage.py miragrations
   ```
 
->All next step are the same with the others systems. See detail in repository [real-estate-linux](https://github.com/tienduy-nguyen/django-web/tree/master/real-estate-linux)
+> All next step are the same with the others systems. See detail in repository [real-estate-linux](https://github.com/tienduy-nguyen/django-web/tree/master/real-estate-linux)
+
+---
+
+**This is a part of Python Django Course of Brad Traversy on Udemy [Course](https://www.udemy.com/course/python-django-dev-to-deployment/)**

@@ -538,3 +538,7 @@ We can learn all the details in [Django Documentation Official](https://docs.dja
   [Configuring Django Apps for Heroku](https://devcenter.heroku.com/articles/django-app-configuration)
 
   [Concurrency and Database Connection in Django](https://devcenter.heroku.com/articles/python-concurrency-and-database-connections)
+
+---
+
+**This is a part of Python Django Course of Brad Traversy on Udemy [Course](https://www.udemy.com/course/python-django-dev-to-deployment/)**
