@@ -1,6 +1,11 @@
 from django.contrib.messages import constants as messages
 import os
+import psycopg2
 import environ
+import dj_database_url
+import django_heroku
+
+
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -19,8 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env('DEBUG_VALUE')
 
+# ALLOWED_HOSTS = ['td-realestate.herokuapp.com']
 ALLOWED_HOSTS = []
 
 
@@ -51,7 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'btre.urls'
+ROOT_URLCONF = 'real-estate-linux.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'btre.wsgi.application'
+WSGI_APPLICATION = 'real-estate-linux.wsgi.application'
 
 
 # Database
@@ -125,7 +131,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'btre/static')
+    os.path.join(BASE_DIR, 'real-estate-linux/static')
 ]
 
 
@@ -146,3 +152,13 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = env('EMAIL_HOST')
 EMAIL_HOST_PASSWORD = env('EMAIL_PWD')
 EMAIL_USE_TLS = True
+
+
+# Heroku
+# django_heroku.settings(locals())
+
+# DATABASE_URL = os.environ['DATABASE_URL']
+
+# conn = psycopg2.connect(DATABASE_URL, sslmode='require')
+# DATABASES['default'] = dj_database_url.config(
+#     conn_max_age=600, ssl_require=True)
