@@ -1,0 +1,158 @@
+* {
+  box-sizing: inherit;
+}
+
+html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  box-sizing: border-box;
+  font-size: 100%;
+  line-height: 2.56rem;
+}
+
+/* Top bar */
+#topbar {
+  /* background-color: #f8f9fa; */
+}
+.topbar__wrap {
+  align-items: center;
+  justify-content: flex-end;
+  display: none;
+}
+.topbar__wrap-no-auth {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.topbar__logo img {
+  width: 40px;
+  height: auto;
+}
+
+.topbar__user-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.topbar__icon {
+  color: #5f5f5f;
+}
+.topbar__user-show {
+  cursor: pointer;
+}
+#topbar-search-form {
+  display: none;
+}
+/* .topbar__user-info-wrap div a {
+  color: #333;
+} */
+.topbar__user-info-name a:hover {
+  text-decoration: none;
+}
+
+.topbar__user-info-email a {
+  color: #999;
+}
+
+.topbar__user-menu {
+  position: absolute;
+  border-radius: 1 solid #f1f1f1;
+  min-width: 200px;
+  overflow-x: scroll;
+  z-index: 2;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  font-weight: 400;
+  list-style: none;
+  right: 10px;
+  display: none;
+  background-color: #fff;
+  top: 45px;
+}
+.topbar__user-menu li a {
+  color: #666;
+}
+.topbar__user-menu li a:hover {
+  color: black;
+}
+.topbar__user-overlay {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.01);
+  display: none;
+  animation: fadeIn linear 0.2s;
+}
+
+.topbar__user-menu::before {
+  position: absolute;
+  z-index: 2;
+  top: -22px;
+  right: 4px;
+  content: '';
+  border-width: 12px 16px;
+  border-style: solid;
+  border-color: transparent transparent #fff transparent;
+}
+
+.topbar__user-menu:after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  top: -16px;
+  height: 20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Navbar */
+.navbar {
+  opacity: 0.9;
+  position: relative;
+  z-index: 1;
+}
+.nav-category__list {
+  max-width: 100%;
+  overflow-x: auto;
+}
+/* Various*/
+
+.btn-secondary {
+  color: #fff;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+}
+
+#top-footer {
+  border: 1px solid #b4b4b4;
+  color: #10284e;
+}
+
+.social a {
+  transition: all 0.2s ease-in;
+  margin-right: 0.4rem;
+  text-decoration: none;
+}
+.social a i {
+  transition: all 0.2s ease-in;
+}
+.social a:hover i {
+  transform: scale(0.95);
+}
