@@ -8,9 +8,6 @@ We can learn all the details in [Django Documentation Official](https://docs.dja
 
 - Make sure we installed python3 and virtualenv
 
-  If we need run command in window, we need install virtualenv (virtual enviroment).
-  In MacOS and Linux we dont need it
-
   ```bash
   $ python3 -m pip install --user virtualenv
   ```
@@ -35,7 +32,10 @@ We can learn all the details in [Django Documentation Official](https://docs.dja
 
 #### Django install and setup
 
-- Install globally
+![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+)
+`Attention: Always using python3 manage.py ... in virtual enviroment (source lenv/bin/activate)`
+
+- Install globally (without virtual enviroment)
 
   ```bash
   $ sudo apt install python3-django
@@ -145,7 +145,7 @@ We can learn all the details in [Django Documentation Official](https://docs.dja
 
 #### Create Model
 
-- Pre-install to connect with postgresql
+- Pre-install (in virtual enviroment) to connect with postgresql
 
   ```bash
   $ pip3 install psycopg2
@@ -540,5 +540,3 @@ We can learn all the details in [Django Documentation Official](https://docs.dja
   [Concurrency and Database Connection in Django](https://devcenter.heroku.com/articles/python-concurrency-and-database-connections)
 
 ---
-
-**This is a part of Python Django Course of Brad Traversy on Udemy [Course](https://www.udemy.com/course/python-django-dev-to-deployment/)**
