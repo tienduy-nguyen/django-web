@@ -199,7 +199,7 @@ We can learn all the details in [Django Documentation Official](https://docs.dja
   from django.contrib import admin
   from .models import Listing
 
-  admin.site.import(Listing)
+  admin.site.register(Listing)
   ```
 
   We do the same things in admin.py file of Realtor
@@ -208,7 +208,7 @@ We can learn all the details in [Django Documentation Official](https://docs.dja
   from django.contrib import admin
   from .models import Realtor
 
-  admin.site.import(Realtor)
+  admin.site.resgister(Realtor)
   ```
 
 - Register models with admin page
