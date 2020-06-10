@@ -248,3 +248,187 @@
     ....,
   ]
   ```
+- Create urls authentication account
+  ```python
+  # users/urls.py
+  from django.urls import path
+  from . import views
+
+  urlpatterns = [
+      path('login/', views.login, name='login'),
+      path('register/', views.register, name='register'),
+      path('logout/', views.logout, name='logout')
+  ]
+
+  ```
+- Create def in views.py
+  ```python
+  # users/views.py
+
+  ```
+- How to customize a form of django framwork for registration
+  ```python
+  from django import forms
+  from django.forms import ModelForm
+  from django.contrib.auth.models import User
+  from django.contrib.auth.forms import UserCreationForm
+
+
+  class RegistrationForm(UserCreationForm):
+      class Meta:
+          model = User
+          fields = (
+              'username',
+              'email',
+              'password1',
+              'password2',
+          )
+
+  ```
+- Call the field of Registration form in html
+  ```html
+  <!-- register.html -->
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.username}}
+        {{form.email}}
+        {{form.password1}}
+        {{form.password2}}
+        <div class="d-flex justify-content-center mt-4 login_container">
+          <input class="btn login_btn" type="submit" value="Register Account">
+        </div>
+    </form>
+  ```
+- Login method in django
+  ```python
+  # users/views.py
+  # Make we import : from django.contrib.auth.models import User, auth
+  def login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
+            messages.success(request, 'You are now logged in')
+            return redirect('home')
+        else:
+            messages.error(request, 'Username or password is incorrect!')
+            return redirect('login')
+    else:
+        return render(request, 'users/login.html')
+  ```
+- Logout method in django
+  ```python
+  # users/views.py
+  # Make we import : from django.contrib.auth.models import User, auth
+  def logout(request):
+    if request.method == 'POST':
+        auth.logout(request)
+        messages.success(request, 'You are now logged out')
+        return redirect('home')
+
+  ```
+- Register in django (user form of django)
+  ```python
+  def register(request):
+    form = RegistrationForm(request.POST or None)
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        # Check if all field of form is valided
+        if form.is_valid():
+            fs = form.save(commit=False)
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            password1 = form.cleaned_data.get('password1')
+            password2 = form.cleaned_data.get('password2')
+            # Check password
+            if password1 == password2:
+                if User.objects.filter(username=username).exists():
+                    messages.error(request, 'That username is taken')
+                    return redirect('register')
+                else:
+                    if User.objects.filter(email=email).exists():
+                        messages.error(request, 'That email is being used')
+                        return redirect('register')
+                    else:
+                      # Look good
+                        fs.save()
+                        user = auth.authenticate(
+                            username=username, password=password1)
+                        auth.login(request, user)
+                        fs.user = request.user
+                        messages.success(
+                            request, 'Account created for ' + username)
+                        return redirect('home')
+            else:
+                messages.error(request, 'Passwords do not match')
+                return redirect('register')
+
+    context = {'form': form}
+    return render(request, 'users/register.html', context)
+  ```
+
+## User profile
+- Creat a Profile models in users apps
+  ```python
+  # users/models.py
+  from django.db import models
+  from django.contrib.auth.model import User
+
+  # One to one relation ship with user existed
+  class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASADE)
+    image = models.ImageField(default = 'default.png', upload_to='profile_pics')
+
+    def __str__(self):
+      return f'{self.user.username} Profile'
+  ```
+- Add to admin.py file
+  ```python
+  # users/admin.py
+  from django.contrib import admin
+  from .models import Profile
+
+  admin.site.register(Profile)
+  ```
+- Create profile direct with django signals
+  ```python
+  # users/signals.py
+  from django.db.models.signals import post_save
+  from django.contrib.auth.models import User
+  from django.dispatch import receiver
+  from .models import Profile
+
+
+  @receiver(post_save, sender=User)
+  def create_profile(sender, instance, created, **kwargs):
+      if created:
+          Profile.objects.create(user=instance)
+
+
+  @receiver(post_save, sender=User)
+  def save_profile(sender, instance, **kwargs):
+      instance.profile.save()
+
+  ```
+
+  and add signals in apps.py
+
+  ```python
+  # users/apps.py
+  from django.apps import AppConfig
+
+  class UsersConfig(AppConfig):
+      name = 'users'
+
+      def ready(self):
+          import users.signals
+
+  ```
+- Small css framwork for django: crispy
+  ```bash
+  pip3 install django-crispy-forms
+  ```
+  

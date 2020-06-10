@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
-from .forms import RegistrationForm
+from .forms import RegistrationForm, UserUpdateForm, ProfileUpdateForm
 
 import logging
 log = logging.getLogger(__name__)
@@ -13,6 +13,7 @@ def register(request):
     form = RegistrationForm(request.POST or None)
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
+        # Check if all field of form is valided
         if form.is_valid():
             fs = form.save(commit=False)
             username = form.cleaned_data.get('username')
@@ -68,3 +69,13 @@ def logout(request):
         auth.logout(request)
         messages.success(request, 'You are now logged out')
         return redirect('home')
+
+
+def profile(request):
+    userForm = UserUpdateForm()
+    profileForm = ProfileUpdateForm()
+    context = {
+        'userForm': userForm,
+        'profileForm': profileForm
+    }
+    return render(request, 'users/profile.html', context)

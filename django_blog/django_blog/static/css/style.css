@@ -17,7 +17,7 @@ html {
 .topbar__wrap {
   align-items: center;
   justify-content: flex-end;
-  display: none;
+  display: flex;
 }
 .topbar__wrap-no-auth {
   display: flex;
@@ -131,6 +131,14 @@ html {
 }
 
 /* Footer */
+#main-footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 100px;
+  width: 100%;
+  overflow: hidden;
+}
 .footer__nav {
   list-style: none;
   display: flex;

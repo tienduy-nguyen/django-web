@@ -1,4 +1,5 @@
 {% load static %}
+{% load replace %}
 <section id="topbar" class="p-2 topbar-container">
   <div class="container">
     <div class="row">
@@ -7,12 +8,8 @@
           <img src=" {% static 'img/logo.png'%}" alt="">
         </a>
       </div>
-      <div class="topbar__wrap-no-auth col-sm-10 col-xs-10">
-        <div><a class=" mr-4" href="{% url 'login' %}">Sign in</a></div>
-        <a class="btn btn-success my-2 my-sm-0 py-1" href="{% url 'register' %}">Getting
-          Started</a>
-      </div>
 
+      {% if user.is_authenticated %}
       <div class="col-sm-10 col-xs-10 topbar__wrap">
         <a href="#" class='topbar__search topbar__icon mr-2' id="topbar-search-icon" onclick="toggleSearchForm()">
           <i class="fas fa-search"></i>
@@ -30,21 +27,21 @@
         <div class="topbar__user">
           <div class="topbar__user-show" onclick="toggleUserMenu()">
             <div href="" class="topbar__user-link-profile">
-              <img src="{% static 'img/userLogo.jpg' %}" alt="" class="topbar__user-img img-fluid">
+              <img src="{{user.profile.image.url}}" alt="" class="topbar__user-img img-fluid">
             </div>
           </div>
           <label for="topbar__user-menu " class="topbar__user-overlay" onclick="toggleUserMenu(true)"></label>
           <ul class="topbar__user-menu text-left p-0">
             <div class="topbar__user-signed d-flex pt-3">
-              <div class="topbar__user-show ml-3" style="cursor: pointer;">
-                <img src="{% static 'img/userLogo.jpg' %}" alt="" class="topbar__user-img img-fluid">
-              </div>
+              <a class="topbar__user-show ml-3" href="{% url 'profile' %}">
+                <img src="{{user.profile.image.url}}" alt="" class="topbar__user-img img-fluid">
+              </a>
               <div class="topbar__user-info-wrap flex-column ml-3 py-0">
                 <div class="font-weight-bold topbar__user-info-name">
-                  <a href="">Hana</a>
+                  <a href="{% url 'profile' %}">{{user.username}}</a>
                 </div>
                 <div class="topbar__user-info-email">
-                  <a class="" href="">@hanamorone</a>
+                  <a class="" href="{% url 'profile' %}">@{{user.email | replace:"/(?=@).+/"}}</a>
                 </div>
               </div>
             </div>
@@ -67,18 +64,28 @@
             </li>
             <hr>
             <li class="nav-item">
-              <a class="nav-link py-1" href="">Profile</a>
+              <a class="nav-link py-1" href="{% url 'profile' %}">Profile</a>
             </li>
             <li class="nav-item ">
               <a class="nav-link py-1" href="">Settings</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link py-1" href="">Sign out</a>
+              <a class="nav-link py-1" href="{% url 'logout' %}">Log out</a>
             </li>
 
           </ul>
         </div>
       </div>
+      <!-- If user is not signed -->
+      {% else %}
+      <div class="topbar__wrap-no-auth col-sm-10 col-xs-10">
+        <div><a class=" mr-4" href="{% url 'login' %}">Sign in</a></div>
+        <a class="btn btn-success my-2 my-sm-0 py-1" href="{% url 'register' %}">Getting
+          Started</a>
+      </div>
+
+      {% endif %}
+
     </div>
   </div>
 </section>
