@@ -5,7 +5,9 @@ setTimeout(function () {
   $('message').fadeOut('slow');
 }, 3000);
 
-document.addEventListener('DOMContentLoaded', () => {});
+document.addEventListener('DOMContentLoaded', () => {
+  //
+});
 function toggleUserMenu(isOverlay = false) {
   const userMenu = document.querySelector('.topbar__user-menu');
   const overlay = document.querySelector('.topbar__user-overlay');
@@ -38,7 +40,6 @@ function toggleMenu() {
 }
 
 function toggleSearchForm() {
-  console.log('toggle search form');
   const searchForm = document.getElementById('topbar-search-form');
   if (searchForm.style.display == 'block') {
     searchForm.style.display = 'none';

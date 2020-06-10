@@ -1,45 +1,81 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest
-
-
-posts = [
-    {
-        'author': 'TienDuy',
-        'title': 'Blog post 1',
-        'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut sem sit amet libero condimentum accumsan nec at erat. Quisque egestas felis sit amet ex sodales eleifend. Proin feugiat metus eu rhoncus egestas. Duis tempor magna elit, eget finibus arcu pharetra sed. Vivamus placerat libero ligula, eget dignissim massa dictum vitae. Aliquam finibus vulputate massa, id tincidunt tortor pharetra id. Nunc tempor sem at ante molestie, ac dictum urna eleifend. Aenean sagittis sem sed dui pharetra, vel tristique turpis gravida. Proin fermentum vitae tellus a accumsan. Curabitur quam erat, aliquam id ex ut, mollis faucibus nisl.',
-        'date_posted': 'Juin 01, 2020',
-        'readtime': '10 min'
-    },
-    {
-        'author': 'TienDuy',
-        'title': 'Blog post 2',
-        'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut sem sit amet libero condimentum accumsan nec at erat. Quisque egestas felis sit amet ex sodales eleifend. Proin feugiat metus eu rhoncus egestas. Duis tempor magna elit, eget finibus arcu pharetra sed. Vivamus placerat libero ligula, eget dignissim massa dictum vitae. Aliquam finibus vulputate massa, id tincidunt tortor pharetra id. Nunc tempor sem at ante molestie, ac dictum urna eleifend. Aenean sagittis sem sed dui pharetra, vel tristique turpis gravida. Proin fermentum vitae tellus a accumsan. Curabitur quam erat, aliquam id ex ut, mollis faucibus nisl.',
-        'date_posted': 'Juin 02, 2020',
-        'readtime': '5 min'
-    },
-    {
-        'author': 'TienDuy',
-        'title': 'Blog post 3',
-        'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut sem sit amet libero condimentum accumsan nec at erat. Quisque egestas felis sit amet ex sodales eleifend. Proin feugiat metus eu rhoncus egestas. Duis tempor magna elit, eget finibus arcu pharetra sed. Vivamus placerat libero ligula, eget dignissim massa dictum vitae. Aliquam finibus vulputate massa, id tincidunt tortor pharetra id. Nunc tempor sem at ante molestie, ac dictum urna eleifend. Aenean sagittis sem sed dui pharetra, vel tristique turpis gravida. Proin fermentum vitae tellus a accumsan. Curabitur quam erat, aliquam id ex ut, mollis faucibus nisl.',
-        'date_posted': 'Juin 03, 2020',
-        'readtime': '6 min'
-    },
-    {
-        'author': 'TienDuy',
-        'title': 'Blog post 4',
-        'content': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut sem sit amet libero condimentum accumsan nec at erat. Quisque egestas felis sit amet ex sodales eleifend. Proin feugiat metus eu rhoncus egestas. Duis tempor magna elit, eget finibus arcu pharetra sed. Vivamus placerat libero ligula, eget dignissim massa dictum vitae. Aliquam finibus vulputate massa, id tincidunt tortor pharetra id. Nunc tempor sem at ante molestie, ac dictum urna eleifend. Aenean sagittis sem sed dui pharetra, vel tristique turpis gravida. Proin fermentum vitae tellus a accumsan. Curabitur quam erat, aliquam id ex ut, mollis faucibus nisl.',
-        'date_posted': 'Juin 04, 2020',
-        'readtime': '8 min'
-    },
-]
+from .models import Post, Category
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 
 def home(request):
+    posts = Post.objects.order_by('-create_at')
     context = {
         'posts': posts
     }
     return render(request, 'blog/home.html', context)
 
 
+def postList(request):
+    posts = Post.objects.order_by('-create_at')
+    context = {
+        'posts': posts
+    }
+    return render(request, 'blog/posts/postList.html', context)
+
+
+def postDetail(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    context = {
+        'posts': post
+    }
+    return render(request, 'blog/posts/postDetail.html', context)
+
+
 def about(request):
     return render(request, 'blog/about.html')
+
+
+def categoryList(request):
+    categories = Category.objects.all()
+    context = {
+        'categories': categories
+    }
+    return render(request, 'blog/category/categoryList.html', context)
+
+
+def categoryDetail(request, slug):
+    categories = Category.objects.all()
+    posts = Post.objects.filter(is_published=True)
+    if slug:
+        category = get_object_or_404(Category, slug=slug)
+        postList = posts.filter(category=category)
+        context = {
+            'posts': postList
+        }
+    return render(request, 'blog/category/categoryDetail.html', context)
+
+# def tag_list(request):
+#     categories = Category.objects.all()
+#     context = {
+#         'categories': categories
+#     }
+#     return render(request, 'blog/categoryList.html', context)
+
+
+# def tag_detail(request, pk):
+#     category = get_object_or_404(Category, pk=pk)
+#     context = {
+#         'category': category
+#     }
+#     return render(request, 'blog/categoryDetail.html', context)
+
+def handler404(request, *args, **argv):
+    response = render_to_response('404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+
+def handler500(request, *args, **argv):
+    response = render_to_response('500.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 500
+    return response

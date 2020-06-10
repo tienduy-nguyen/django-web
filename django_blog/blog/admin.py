@@ -1,3 +1,18 @@
 from django.contrib import admin
+from .models import Post, Category
 
 # Register your models here.
+
+
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'author', 'is_published',
+                    'slug', 'tags')
+    list_display_links = ('id', 'title', 'author')
+    list_per_page = 25
+    list_filter = ('author', 'tags')
+    search_fields = ('title', 'tags', 'slug')
+    list_editable = ('is_published',)
+
+
+admin.site.register(Post, PostAdmin)
+admin.site.register(Category)

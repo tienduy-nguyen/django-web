@@ -129,6 +129,24 @@ html {
   max-width: 100%;
   overflow-x: auto;
 }
+
+/* Footer */
+.footer__nav {
+  list-style: none;
+  display: flex;
+  padding-left: 4px;
+}
+.footer__nav li {
+  margin-right: 14px;
+}
+.footer__nav li a {
+  color: #fff;
+  font-size: 14px;
+}
+.footer__nav li a:hover {
+  color: #afafaf;
+}
+
 /* Various*/
 
 .btn-secondary {
@@ -138,11 +156,6 @@ html {
 .logo {
   width: 60px;
   height: 60px;
-}
-
-#top-footer {
-  border: 1px solid #b4b4b4;
-  color: #10284e;
 }
 
 .social a {
