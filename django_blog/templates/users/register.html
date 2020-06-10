@@ -120,6 +120,11 @@
           <p id='message'>{{message}}</p>
           {% endfor %}
         </small>
+        <small>
+          {% for log in logger %}
+          <p id='message'>{{log}}</p>
+          {% endfor %}
+        </small>
       </div>
       <div class="mt-4 mb-4">
         <div class="d-flex justify-content-center links-wrap">

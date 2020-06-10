@@ -4,17 +4,22 @@ from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from .forms import RegistrationForm
 
+import logging
+log = logging.getLogger(__name__)
+
 
 # Create your views here.
 def register(request):
-    form = RegistrationForm()
+    form = RegistrationForm(request.POST or None)
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
+            fs = form.save(commit=False)
             username = form.cleaned_data.get('username')
             email = form.cleaned_data.get('email')
             password1 = form.cleaned_data.get('password1')
             password2 = form.cleaned_data.get('password2')
+            # Check password
             if password1 == password2:
                 if User.objects.filter(username=username).exists():
                     messages.error(request, 'That username is taken')
@@ -25,10 +30,14 @@ def register(request):
                         return redirect('register')
                     else:
                       # Look good
-                        form.save()
+                        fs.save()
+                        user = auth.authenticate(
+                            username=username, password=password1)
+                        auth.login(request, user)
+                        fs.user = request.user
                         messages.success(
                             request, 'Account created for ' + username)
-                        return redirect('login')
+                        return redirect('home')
             else:
                 messages.error(request, 'Passwords do not match')
                 return redirect('register')
