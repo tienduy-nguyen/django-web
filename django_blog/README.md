@@ -501,12 +501,23 @@
   
   ```python
   # users/views.py file
-  def profile(request):
-    userForm = UserUpdateForm(instance = request.user)
-    profileForm = ProfileUpdateForm(instance= request.user.profile)
-    context = {
-        'userForm': userForm,
-        'profileForm': profileForm
-    }
-    return render(request, 'users/profile.html', context)
+  from django.contrib.auth.decorators import login_required
+  @login_required
+  def editProfile(request):
+      if request.method == 'POST':
+          userForm = UserUpdateForm(request.POST, isntance=request.user)
+          profileForm = ProfileUpdateForm(
+              request.POST, request.FILES, instance=request.user.profile)
+        if userForm is valid() and profileForm is valid():
+          userForm.save()
+          profileForm.save()
+      else:
+          userForm = UserUpdateForm(isntance=request.user)
+          profileForm = ProfileUpdateForm(instance=request.user.profile)
+
+      context = {
+          'userForm': userForm,
+          'profileForm': profileForm
+      }
+      return render(request, 'users/profile.html', context)
   ```

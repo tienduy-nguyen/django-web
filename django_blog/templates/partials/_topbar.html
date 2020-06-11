@@ -38,7 +38,14 @@
               </a>
               <div class="topbar__user-info-wrap flex-column ml-3 py-0">
                 <div class="font-weight-bold topbar__user-info-name">
-                  <a href="{% url 'profile' user.username %}">{{user.username}}</a>
+                  <a href="{% url 'profile' user.username %}">
+                    {% if user.first_name or user.last_name %}
+                    {{ user.first_name}} {{user.last_name}}
+                    {% else %}
+                    {{user.username}}
+                    {% endif %}
+
+                  </a>
                 </div>
                 <div class="topbar__user-info-email">
                   <a class="" href="{% url 'profile' user.username %}">@{{user.email | replace:"/(?=@).+/"}}</a>

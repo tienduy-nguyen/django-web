@@ -4,7 +4,7 @@
 
 {% block content %}
 {% if user.username == user_view.username %}
-<div class="content-section container pt-5 ml-auto ">
+<div class="content-section container pt-5 ml-auto " style="min-height: 100vh;">
   <div class="col-md-8 col-lg-8">
     <!-- Same user -->
     <div class="profile-info-general">
@@ -12,13 +12,13 @@
         <img src="{{ user.profile.image.url }}" alt="" class="rounded-circle account-img mr-4" style="height: 100px;">
         <div class="media-body">
           <h3 class='account-heading'>
-            {% if user.first_name %}
+            {% if user.first_name or user.last_name %}
             {{ user.first_name}} {{user.last_name}}
             {% else %}
             {{user.username}}
             {% endif %}
           </h3>
-          <p class='text-secondary'>{{ user_view.status}}</p>
+          <p class='text-secondary'>{{ user.profile.status}}</p>
           <small class="d-flex">
             <a class="mr-4 text-muted" href="#">20 Following</a>
             <a class="text-muted" href="#">0 Followers</a>
@@ -75,7 +75,7 @@
 </div>
 
 {% else %}
-<div class="content-section container pt-5 ml-auto">
+<div class="content-section container pt-5 ml-auto" style="min-height:100vh">
   <div class="col-md-8 col-lg-8">
     <!-- View user account public -->
     <div class="profile-info-general ">
@@ -93,7 +93,7 @@
               style="line-height: 0px;height:18px; position:relative;margin-top:6px"><small>Follow</small></button>
 
           </div>
-          <p class='text-secondary'>{{ user_view.status}}</p>
+          <p class='text-secondary'>{{ user_view.profile.status}}</p>
           <small class="d-flex">
             <a class="mr-4 text-muted" href="#">20 Following</a>
             <a class="text-muted" href="#">0 Followers</a>

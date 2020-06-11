@@ -5,6 +5,8 @@
 {% block content %}
 {% load static %}
 <div class="container py-3 " style="min-height: 100vh;">
+  <!-- Alert -->
+  {% include 'partials/_alerts.html' %}
   {% for post in posts %}
   <!-- Show on mobile -->
   <div class="card my-5 py-0" style="border:none">
