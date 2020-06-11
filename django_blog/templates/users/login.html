@@ -39,13 +39,13 @@
 
   .login_btn {
     width: 100%;
-    background: #33ccff !important;
-    color: white !important;
+    background: #33ccff;
+    color: white;
   }
 
   .login_btn:focus {
-    box-shadow: none !important;
-    outline: 0px !important;
+    box-shadow: none;
+    outline: 0px;
   }
 
   .login_container {
@@ -53,16 +53,16 @@
   }
 
   .input-group-text {
-    background: #f7ba5b !important;
-    color: white !important;
-    border: 0 !important;
-    border-radius: 0.25rem 0 0 0.25rem !important;
+    background: #f7ba5b;
+    color: white;
+    border: 0;
+    border-radius: 0.25rem 0 0 0.25rem;
   }
 
   .input_user,
   .input_pass:focus {
-    box-shadow: none !important;
-    outline: 0px !important;
+    box-shadow: none;
+    outline: 0px;
   }
 
   #messages {
@@ -91,6 +91,7 @@
       <div class="d-flex justify-content-center pt-4">
         <h3 id="form-title"><i class="fas fa-user"></i> LOGIN</h3>
       </div>
+
       <div class="d-flex justify-content-center form_container">
         <form method="POST" action="">
           {% csrf_token %}
@@ -100,11 +101,17 @@
             </div>
             <input type="text" name="username" placeholder="Username..." class="form-control">
           </div>
-          <div class="input-group mb-3">
+          <div class="input-group mb-3" id="show_hide_password">
             <div class="input-group-append">
               <span class="input-group-text"><i class="fas fa-key"></i></span>
             </div>
-            <input type="password" name="password" placeholder="Password..." class="form-control">
+            <input type="password" id="password" name="password" data-toggle="password" placeholder="Password..."
+              class="form-control">
+            <div class="input-group-append">
+              <span class='input-group-text' id="show-pass-icon"
+                style="background-color: #fff;color:#333;cursor:pointer"><i class="fa fa-eye-slash" aria-hidden="true"
+                  onclick="showPass()"></i></span>
+            </div>
           </div>
 
           <div class="d-flex justify-content-center mt-4 login_container">
@@ -112,13 +119,9 @@
           </div>
         </form>
       </div>
-      <div class='pt-2 text-white text-center'>
-        <small>
-          {% for message in messages %}
-          <p id='message'>{{message}}</p>
-          {% endfor %}
-        </small>
-      </div>
+      <!-- Messages -->
+      {% include 'partials/_msgAuth.html' %}
+
       <div class="mt-4 mb-3">
         <div class="d-flex justify-content-center links-wrap">
           Don't have an account? <a href="{% url 'register' %}" class="ml-2">Signup</a>
@@ -126,6 +129,20 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+    function showPass() {
+      const iconEye = document.getElementById('show-pass-icon');
+      const groupPass = document.getElementById('show_hide_password')
+      const inputPass = groupPass.querySelector('input');
+      if (inputPass.type == 'password') {
+        inputPass.type = 'text'
+      } else {
+        inputPass.type = 'password'
+      }
+
+    }
+  </script>
+
 </div>
 
 

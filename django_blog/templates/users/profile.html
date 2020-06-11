@@ -1,26 +1,136 @@
 {% extends 'base.html'%}
+{% block title %} | Profile{% endblock %}
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="content-section container py-4 ml-auto col-md-8 col-lg-4">
-  <div class="media pb-5">
-    <img src="{{ user.profile.image.url }}" alt="" class="rounded-circle account-img mr-4" style="height: 100px;">
-    <div class="media-body">
-      <h2 class='account-heading'>{{ user.username}}</h2>
-      <p class="text-secondary">{{user.email}}</p>
+{% if user.username == user_view.username %}
+<div class="content-section container pt-5 ml-auto ">
+  <div class="col-md-8 col-lg-8">
+    <!-- Same user -->
+    <div class="profile-info-general">
+      <div class="media pb-5">
+        <img src="{{ user.profile.image.url }}" alt="" class="rounded-circle account-img mr-4" style="height: 100px;">
+        <div class="media-body">
+          <h3 class='account-heading'>
+            {% if user.first_name %}
+            {{ user.first_name}} {{user.last_name}}
+            {% else %}
+            {{user.username}}
+            {% endif %}
+          </h3>
+          <p class='text-secondary'>{{ user_view.status}}</p>
+          <small class="d-flex">
+            <a class="mr-4 text-muted" href="#">20 Following</a>
+            <a class="text-muted" href="#">0 Followers</a>
+          </small>
+          <br>
+        </div>
+        <form class="ml-auto" method='POST'>
+          <a class='btn btn-outline-info py-0' href="{% url 'editProfile' %}">
+            <small>
+              Edit Profile
+            </small>
+          </a>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Nav here -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+          aria-selected="false">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="clabs-tab" data-toggle="tab" href="#clabs" role="tab" aria-controls="clabs"
+          aria-selected="false">Claps</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="comment-tab" data-toggle="tab" href="#comment" role="tab" aria-controls="comment"
+          aria-selected="false">Comments</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+          aria-selected="false">Contact</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+      <div class="tab-pane fade" id="clabs" role="tabpanel" aria-labelledby="clabs-tab">...</div>
+      <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="comment-tab">...</div>
+      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+        <div class="pt-4">
+          <small>
+            <p class='text-secondary'>Username: {{ user.username}}</p>
+            <p class="text-secondary">Email address: {{user.email}}</p>
+          </small>
+
+        </div>
+      </div>
     </div>
   </div>
-  <!-- Form here -->
-  <form method='POST'>
-    {% csrf_token %}
-    <fieldset class='form-group'>
-      <legend class='border-bottom mb-4'>Profile Info</legend>
-      {{ userForm | crispy}}
-      {{ profileForm | crispy}}
-    </fieldset>
-    <div class="form-group">
-      <button class="btn btn-outline-info" type="submit">Update</button>
-    </div>
-  </form>
+
+
 </div>
+
+{% else %}
+<div class="content-section container pt-5 ml-auto">
+  <div class="col-md-8 col-lg-8">
+    <!-- View user account public -->
+    <div class="profile-info-general ">
+      <div class="media pb-5 d-flex">
+        <div class="media-body flex-column">
+          <div class="username-wrap d-flex">
+            <h3 class='account-heading mr-3'>
+              {% if user_view.first_name %}
+              {{ user_view.first_name}} {{user_view.last_name}}
+              {% else %}
+              {{user_view.username}}
+              {% endif %}
+            </h3>
+            <button class="btn btn-outline-success"
+              style="line-height: 0px;height:18px; position:relative;margin-top:6px"><small>Follow</small></button>
+
+          </div>
+          <p class='text-secondary'>{{ user_view.status}}</p>
+          <small class="d-flex">
+            <a class="mr-4 text-muted" href="#">20 Following</a>
+            <a class="text-muted" href="#">0 Followers</a>
+          </small>
+        </div>
+        <div class="ml-auto">
+          <img src="{{ user_view.profile.image.url }}" alt="" class="rounded-circle account-img ml-auto"
+            style="height: 100px;">
+        </div>
+      </div>
+    </div>
+    <!-- Nav here -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+          aria-selected="false">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+          aria-selected="false">Claps</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+          aria-selected="false">Contact</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
+      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+    </div>
+  </div>
+
+</div>
+
+
+{% endif %}
+
+
 {% endblock%}

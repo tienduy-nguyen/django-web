@@ -371,7 +371,7 @@
   ```
 
 ## User profile
-- Creat a Profile models in users apps
+- Create a Profile models in users apps
   ```python
   # users/models.py
   from django.db import models
@@ -385,7 +385,7 @@
     def __str__(self):
       return f'{self.user.username} Profile'
   ```
-- Add to admin.py file
+- Update in admin.py file
   ```python
   # users/admin.py
   from django.contrib import admin
@@ -431,4 +431,82 @@
   ```bash
   pip3 install django-crispy-forms
   ```
+
+  Configure in INSTALLED_APP of settings.py file of project
+  ```python
+  INSTALLED_APPS = [
+    ...,
+    'crispy_forms',
+    ...
+  ]
+  # Crispy template
+  CRISPY_TEMPLATE_PACK = 'bootstrap4'
+  ```
+  Check the documentation of [django-crispy-form](https://django-crispy-forms.readthedocs.io/en/latest/) for more details
+
+  And using it in our html
+  ```html
+  <!-- profile.html -->
+  {% extends 'base.html'%}
+  {% load crispy_forms_tags %}
+
+  {% block content %}
+  <div class="content-section container py-4 ml-auto col-md-8 col-lg-4">
+    <div class="media pb-5">
+      <img src="{{ user.profile.image.url }}" alt="" class="rounded-circle account-img mr-4" style="height: 100px;">
+      <div class="media-body">
+        <h2 class='account-heading'>{{ user.username}}</h2>
+        <p class="text-secondary">{{user.email}}</p>
+      </div>
+    </div>
+    <!-- Form here -->
+    <form method='POST'>
+      {% csrf_token %}
+      <fieldset class='form-group'>
+        <legend class='border-bottom mb-4'>Profile Info</legend>
+        {{ userForm | crispy}}
+        {{ profileForm | crispy}}
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">Update</button>
+      </div>
+    </form>
+  </div>
+  {% endblock%}
+
+  ```
+- Update user profile
   
+  Create updateUser and updateProfile in users/forms.py file
+  ```python
+  # users/forms.py
+  class UserUpdateForm(forms.ModelForm):
+      email = forms.EmailField()
+
+      class Meta:
+          model = User
+          fields = [
+              'first_name',
+              'last_name',
+              'username',
+              'email',
+          ]
+
+
+  class ProfileUpdateForm(forms.ModelForm):
+      class Meta:
+          model = Profile
+        fields = ['image']
+  ```
+  
+  ```python
+  # users/views.py file
+  def profile(request):
+    userForm = UserUpdateForm(instance = request.user)
+    profileForm = ProfileUpdateForm(instance= request.user.profile)
+    context = {
+        'userForm': userForm,
+        'profileForm': profileForm
+    }
+    return render(request, 'users/profile.html', context)
+  ```

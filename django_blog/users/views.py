@@ -1,9 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
 from django.contrib import messages
 from django.contrib.auth.models import User, auth
 from .forms import RegistrationForm, UserUpdateForm, ProfileUpdateForm
+from django.contrib.auth.decorators import login_required
+from .models import Profile
 
+
+# Log actions of django
 import logging
 log = logging.getLogger(__name__)
 
@@ -69,11 +73,30 @@ def logout(request):
         auth.logout(request)
         messages.success(request, 'You are now logged out')
         return redirect('home')
+    return
 
 
-def profile(request):
-    userForm = UserUpdateForm()
-    profileForm = ProfileUpdateForm()
+@login_required
+def profile(request, user_slug):
+    # user_profile = Profile.objects.get(user__username=user_slug)
+    userFound = get_object_or_404(User, username=user_slug)
+    if userFound is not None:
+        context = {
+            'user_view': userFound
+        }
+        return render(request, 'users/profile.html', context)
+
+
+@login_required
+def editProfile(request):
+    if request.method == 'POST':
+        userForm = UserUpdateForm(request.POST, isntance=request.user)
+        profileForm = ProfileUpdateForm(
+            request.POST, request.FILES, instance=request.user.profile)
+    else:
+        userForm = UserUpdateForm(isntance=request.user)
+        profileForm = ProfileUpdateForm(instance=request.user.profile)
+
     context = {
         'userForm': userForm,
         'profileForm': profileForm

@@ -5,9 +5,6 @@ setTimeout(function () {
   $('message').fadeOut('slow');
 }, 3000);
 
-document.addEventListener('DOMContentLoaded', () => {
-  //
-});
 function toggleUserMenu(isOverlay = false) {
   const userMenu = document.querySelector('.topbar__user-menu');
   const overlay = document.querySelector('.topbar__user-overlay');

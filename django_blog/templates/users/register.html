@@ -37,13 +37,13 @@
 
   .login_btn {
     width: 100%;
-    background: #33ccff !important;
-    color: white !important;
+    background: #33ccff;
+    color: white;
   }
 
   .login_btn:focus {
-    box-shadow: none !important;
-    outline: 0px !important;
+    box-shadow: none;
+    outline: 0px;
   }
 
   .login_container {
@@ -51,16 +51,16 @@
   }
 
   .input-group-text {
-    background: #f7ba5b !important;
-    color: white !important;
-    border: 0 !important;
-    border-radius: 0.25rem 0 0 0.25rem !important;
+    background: #f7ba5b;
+    color: white;
+    border: 0;
+    border-radius: 0.25rem 0 0 0.25rem;
   }
 
   .input_user,
   .input_pass:focus {
-    box-shadow: none !important;
-    outline: 0px !important;
+    box-shadow: none;
+    outline: 0px;
   }
 
   .links-wrap {
@@ -114,18 +114,10 @@
           </div>
         </form>
       </div>
-      <div class='pt-2 text-white text-center'>
-        <small>
-          {% for message in messages %}
-          <p id='message'>{{message}}</p>
-          {% endfor %}
-        </small>
-        <small>
-          {% for log in logger %}
-          <p id='message'>{{log}}</p>
-          {% endfor %}
-        </small>
-      </div>
+
+      <!-- Messages -->
+      {% include 'partials/_msgAuth.html' %}
+
       <div class="mt-4 mb-4">
         <div class="d-flex justify-content-center links-wrap">
           Already have an account? <a href="{% url 'login' %}" class="ml-2">Login</a>
@@ -140,15 +132,16 @@
    */
 
   //Query All input fields
-  let form_fields = document.getElementsByTagName('input')
-  form_fields[2].placeholder = 'Username..';
-  form_fields[3].placeholder = 'Email..';
-  form_fields[4].placeholder = 'Enter password...';
-  form_fields[5].placeholder = 'Re-enter Password...';
+  const formRegister = document.querySelector('.form_container');
+  const formFields = formRegister.getElementsByTagName('input')
+  formFields[1].placeholder = 'Username..';
+  formFields[2].placeholder = 'Email..';
+  formFields[3].placeholder = 'Enter password...';
+  formFields[4].placeholder = 'Re-enter Password...';
 
 
-  for (let field in form_fields) {
-    form_fields[field].className += ' form-control'
+  for (let field in formFields) {
+    formFields[field].className += ' form-control'
   }
 </script>
 {% endblock %}
