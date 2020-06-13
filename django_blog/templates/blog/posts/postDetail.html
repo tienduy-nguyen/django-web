@@ -5,8 +5,37 @@
 {% load static %}
 <div class="container py-3" style="min-height: 100vh;">
   <h2 class="text-left">{{post.title}}</h2>
-  <div class="post__writer">
+  <div class="post__writer d-flex-row-reverse">
+    <div class="post__writer-info col-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="post__writer-img d-flex">
+        <img src="{{ post.author.profile.image.url }}" class="rounded-circle account-img ml-auto"
+          style="height: 50px;width:50px">
+        <div class="post__writer-detail flex-column ml-2 ">
+          <div class="post__writer-detail-author mb-2">
+            <a
+              href="{% url 'profile' post.author.username %}">{{ post.author.get_full_name |default:post.author.username}}</a>
+            <button class="btn btn-outline-success"
+              style="line-height: 0px;height:18px; position:relative;"><small>Follow</small></button>
+          </div>
+          <div class="post-info d-flex text-muted pt-1" style="line-height: 0px;">
+            <p class=" mr-2"><small>{{post.created_at| date:"F d, Y"}}</small></p>-&nbsp;
+            <p class="">
+              <small>
+                {% if post.read_time  > 0 %}
+                {{post.read_time}} min read &#9733;
+                {% else %}
+                1 min read &#9733;
+                {% endif %}
 
+              </small>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="post__share col-12 col-sm-12 col-md-6 col-lg-6">
+
+    </div>
   </div>
 </div>
 {% endblock %}

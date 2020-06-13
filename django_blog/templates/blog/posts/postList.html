@@ -21,7 +21,7 @@
           </a>
           <p class="card-text text-muted text-justify">{{post.content | truncatewords:10}} </p>
           <p class="card-text py-0 " style="line-height: 0px;"><small class="text-muted"><a
-                href="#">{{post.author}}</a></small></p>
+                href="{% url 'profile' post.author.username %}">{{post.author}}</a></small></p>
           <div class="post-info d-flex text-muted pt-1" style="line-height: 0px;">
             <p class="card-text mr-2"><small>{{post.created_at| date:"F d, Y"}}</small></p>-
             <p class="card-text ml-2">

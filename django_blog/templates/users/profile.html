@@ -12,11 +12,7 @@
         <img src="{{ user.profile.image.url }}" alt="" class="rounded-circle account-img mr-4" style="height: 100px;">
         <div class="media-body">
           <h3 class='account-heading'>
-            {% if user.first_name or user.last_name %}
-            {{ user.first_name}} {{user.last_name}}
-            {% else %}
-            {{user.username}}
-            {% endif %}
+            {{ user.get_full_name |default:user.username}}
           </h3>
           <p class='text-secondary'>{{ user.profile.status}}</p>
           <small class="d-flex">
@@ -83,11 +79,7 @@
         <div class="media-body flex-column">
           <div class="username-wrap d-flex">
             <h3 class='account-heading mr-3'>
-              {% if user_view.first_name %}
-              {{ user_view.first_name}} {{user_view.last_name}}
-              {% else %}
-              {{user_view.username}}
-              {% endif %}
+              {{ user_view.get_full_name |default:user_view.username}}
             </h3>
             <button class="btn btn-outline-success"
               style="line-height: 0px;height:18px; position:relative;margin-top:6px"><small>Follow</small></button>

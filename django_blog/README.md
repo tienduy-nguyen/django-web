@@ -560,6 +560,7 @@
         return render(request, 'users/profile.html', context)
   ```
 
+
 ## Create, update, post
 
 - Create class PostListView and PostDetailView
