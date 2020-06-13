@@ -129,39 +129,45 @@
 - Complete file htmls with dummy data for ours projects
 
 ## Admin page and create models database
+
 - Create a superuser for admin page
   ```bash
   $ python3 manage.py createsuperuser
   ```
 - Create models in models.py file
 - After creating a model, we need make migrations models to the django apps
-  
+
   Makemigration: make whatever changes we need.
+
   ```bash
   $ python3 manage.py makemigrations
   ```
+
 - Check command line how SQL create a table from python
   ```bash
   $ python3 manage.py sqlmigrate blog 0001
   ```
-  >blog: name directory
-  >0001: number file migration - 0001___init__.py
+  > blog: name directory
+  > 0001: number file migration - 0001**\_init**.py
 - Run migrate to update the changes
   ```bash
   $ python3 manage.py migrate
   ```
 - Run Django python sheel
-  
+
   It will allow us to work with the models interactively line by line to create record in SQLite in python
+
   ```bash
   $ python3 manage.py shell
   ```
+
   eg some querry using in interactiveconsole
+
   ```python
   # Terminal
   from blog.models import Post
   from django.contrib.auth.models import User
-  
+
   User.objects.all()
   User.objects.first()
   User.objects.filter(username='tienduy')
@@ -169,6 +175,7 @@
   user = User.objects.filter().first()
 
   ```
+
 - Put models in the admin.py file
 
   For the listings container, firstly, we must add the data of model to show in admin page
@@ -180,36 +187,43 @@
 
   admin.site.register(Post)
   ```
+
 - Create a static media folder to upload images, videos, files
-  
+
   Firstly, we need add MEDIA_ROOT and MEDIA_URL in settings.py file of project
+
   ```python
   # django_blog/settings.py
   MEDIA_ROOT = os.path.join(BASE_DIR,'media')
   MEDIA_URL = '/media/' # name of static folder contains the files uploaded
   ```
+
   And make sure we need add static url to urls.py of project
-  > + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+  > - static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
   ```python
   #django_blog/urls.py
   from django.contrib import admin
   from django.urls import path, include
   from django.conf import settings
   from django.conf.urls.static import static
-
-
-  urlpatterns = [
-      path('admin/', admin.site.urls),
-      path('', include('blog.urls'))
-  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
   ```
+
+urlpatterns = [
+path('admin/', admin.site.urls),
+path('', include('blog.urls'))
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+````
 ## Using django-taggit
 
-  >django-taggit is a reusable able Django application designed to make adding tagging to your project esasy to your project easy.
+>django-taggit is a reusable able Django application designed to make adding tagging to your project esasy to your project easy.
 - Installation
-  ```bash
-  $ pip3 install django-taggit
-  ```
+```bash
+$ pip3 install django-taggit
+````
+
 - Add "taggit" in INSTALLED_APPS of settings.py file
   ```python
   # django_blog
@@ -219,6 +233,7 @@
   ]
   ```
 - Using in the models.py
+
   ```python
   # blog/models.py
   from django.db import models
@@ -230,17 +245,21 @@
 
       tags = TaggableManager()
   ```
-  >Plugging TAGGIT_CASE_INSENSITIVE = True into settings.py if we xant django-taggit to be case insensitive when looing up exiting tags
+
+  > Plugging TAGGIT_CASE_INSENSITIVE = True into settings.py if we xant django-taggit to be case insensitive when looing up exiting tags
 
   .............. to complete
 
 ## Authenticatin (login, register, logout)
+
 - Create users apps
+
   ```bash
   $ python3 manage.py startapps users
   ```
-  
+
   Make sure you add it in INSTALLED_APPS to settings.py file of project
+
   ```python
   INSTALLED_APPS =[
     .....,
@@ -248,7 +267,9 @@
     ....,
   ]
   ```
+
 - Create urls authentication account
+
   ```python
   # users/urls.py
   from django.urls import path
@@ -261,45 +282,50 @@
   ]
 
   ```
+
 - Create def in views.py
+
   ```python
   # users/views.py
 
   ```
+
 - How to customize a form of django framwork for registration
   ```python
   from django import forms
   from django.forms import ModelForm
   from django.contrib.auth.models import User
   from django.contrib.auth.forms import UserCreationForm
-
-
-  class RegistrationForm(UserCreationForm):
-      class Meta:
-          model = User
-          fields = (
-              'username',
-              'email',
-              'password1',
-              'password2',
-          )
-
   ```
+
+class RegistrationForm(UserCreationForm):
+class Meta:
+model = User
+fields = (
+'username',
+'email',
+'password1',
+'password2',
+)
+
+````
 - Call the field of Registration form in html
-  ```html
-  <!-- register.html -->
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{form.username}}
-        {{form.email}}
-        {{form.password1}}
-        {{form.password2}}
-        <div class="d-flex justify-content-center mt-4 login_container">
-          <input class="btn login_btn" type="submit" value="Register Account">
-        </div>
-    </form>
-  ```
+```html
+<!-- register.html -->
+  <form method="POST" action="">
+      {% csrf_token %}
+      {{form.username}}
+      {{form.email}}
+      {{form.password1}}
+      {{form.password2}}
+      <div class="d-flex justify-content-center mt-4 login_container">
+        <input class="btn login_btn" type="submit" value="Register Account">
+      </div>
+  </form>
+````
+
 - Login method in django
+
   ```python
   # users/views.py
   # Make we import : from django.contrib.auth.models import User, auth
@@ -319,7 +345,9 @@
     else:
         return render(request, 'users/login.html')
   ```
+
 - Logout method in django
+
   ```python
   # users/views.py
   # Make we import : from django.contrib.auth.models import User, auth
@@ -330,7 +358,9 @@
         return redirect('home')
 
   ```
+
 - Register in django (user form of django)
+
   ```python
   def register(request):
     form = RegistrationForm(request.POST or None)
@@ -371,7 +401,9 @@
   ```
 
 ## User profile
+
 - Create a Profile models in users apps
+
   ```python
   # users/models.py
   from django.db import models
@@ -385,7 +417,9 @@
     def __str__(self):
       return f'{self.user.username} Profile'
   ```
+
 - Update in admin.py file
+
   ```python
   # users/admin.py
   from django.contrib import admin
@@ -393,6 +427,7 @@
 
   admin.site.register(Profile)
   ```
+
 - Create profile direct with django signals
   ```python
   # users/signals.py
@@ -400,39 +435,41 @@
   from django.contrib.auth.models import User
   from django.dispatch import receiver
   from .models import Profile
-
-
-  @receiver(post_save, sender=User)
-  def create_profile(sender, instance, created, **kwargs):
-      if created:
-          Profile.objects.create(user=instance)
-
-
-  @receiver(post_save, sender=User)
-  def save_profile(sender, instance, **kwargs):
-      instance.profile.save()
-
   ```
 
-  and add signals in apps.py
+@receiver(post_save, sender=User)
+def create_profile(sender, instance, created, \*\*kwargs):
+if created:
+Profile.objects.create(user=instance)
 
-  ```python
-  # users/apps.py
-  from django.apps import AppConfig
+@receiver(post_save, sender=User)
+def save_profile(sender, instance, \*\*kwargs):
+instance.profile.save()
 
-  class UsersConfig(AppConfig):
-      name = 'users'
+````
 
-      def ready(self):
-          import users.signals
+and add signals in apps.py
 
-  ```
+```python
+# users/apps.py
+from django.apps import AppConfig
+
+class UsersConfig(AppConfig):
+    name = 'users'
+
+    def ready(self):
+        import users.signals
+
+````
+
 - Small css framwork for django: crispy
+
   ```bash
   pip3 install django-crispy-forms
   ```
 
   Configure in INSTALLED_APP of settings.py file of project
+
   ```python
   INSTALLED_APPS = [
     ...,
@@ -442,30 +479,33 @@
   # Crispy template
   CRISPY_TEMPLATE_PACK = 'bootstrap4'
   ```
+
   Check the documentation of [django-crispy-form](https://django-crispy-forms.readthedocs.io/en/latest/) for more details
 
   And using it in our html
+
   ```html
   <!-- profile.html -->
-  {% extends 'base.html'%}
-  {% load crispy_forms_tags %}
-
-  {% block content %}
+  {% extends 'base.html'%} {% load crispy_forms_tags %} {% block content %}
   <div class="content-section container py-4 ml-auto col-md-8 col-lg-4">
     <div class="media pb-5">
-      <img src="{{ user.profile.image.url }}" alt="" class="rounded-circle account-img mr-4" style="height: 100px;">
+      <img
+        src="{{ user.profile.image.url }}"
+        alt=""
+        class="rounded-circle account-img mr-4"
+        style="height: 100px;"
+      />
       <div class="media-body">
-        <h2 class='account-heading'>{{ user.username}}</h2>
+        <h2 class="account-heading">{{ user.username}}</h2>
         <p class="text-secondary">{{user.email}}</p>
       </div>
     </div>
     <!-- Form here -->
-    <form method='POST'>
+    <form method="POST">
       {% csrf_token %}
-      <fieldset class='form-group'>
-        <legend class='border-bottom mb-4'>Profile Info</legend>
-        {{ userForm | crispy}}
-        {{ profileForm | crispy}}
+      <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Profile Info</legend>
+        {{ userForm | crispy}} {{ profileForm | crispy}}
       </fieldset>
       <div class="form-group">
         <button class="btn btn-outline-info" type="submit">Update</button>
@@ -473,11 +513,12 @@
     </form>
   </div>
   {% endblock%}
-
   ```
+
 - Update user profile
-  
+
   Create updateUser and updateProfile in users/forms.py file
+
   ```python
   # users/forms.py
   class UserUpdateForm(forms.ModelForm):
@@ -491,33 +532,36 @@
               'username',
               'email',
           ]
-
-
-  class ProfileUpdateForm(forms.ModelForm):
-      class Meta:
-          model = Profile
-        fields = ['image']
   ```
-  
-  ```python
-  # users/views.py file
-  from django.contrib.auth.decorators import login_required
-  @login_required
-  def editProfile(request):
-      if request.method == 'POST':
-          userForm = UserUpdateForm(request.POST, isntance=request.user)
-          profileForm = ProfileUpdateForm(
-              request.POST, request.FILES, instance=request.user.profile)
-        if userForm is valid() and profileForm is valid():
-          userForm.save()
-          profileForm.save()
-      else:
-          userForm = UserUpdateForm(isntance=request.user)
-          profileForm = ProfileUpdateForm(instance=request.user.profile)
 
-      context = {
-          'userForm': userForm,
-          'profileForm': profileForm
-      }
-      return render(request, 'users/profile.html', context)
-  ```
+class ProfileUpdateForm(forms.ModelForm):
+class Meta:
+model = Profile
+fields = ['image']
+
+````
+
+```python
+# users/views.py file
+from django.contrib.auth.decorators import login_required
+@login_required
+def editProfile(request):
+    if request.method == 'POST':
+        userForm = UserUpdateForm(request.POST, isntance=request.user)
+        profileForm = ProfileUpdateForm(
+            request.POST, request.FILES, instance=request.user.profile)
+      if userForm is valid() and profileForm is valid():
+        userForm.save()
+        profileForm.save()
+    else:
+        userForm = UserUpdateForm(isntance=request.user)
+        profileForm = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'userForm': userForm,
+        'profileForm': profileForm
+    }
+    return render(request, 'users/profile.html', context)
+````
+
+## Create, update, post

@@ -3,14 +3,14 @@
 <section id="topbar" class="p-2 topbar-container">
   <div class="container">
     <div class="row">
-      <div class="col-sm-2 col-xs-2 topbar__logo">
+      <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2 topbar__logo">
         <a href="{% url 'home' %}">
           <img src=" {% static 'img/logo.png'%}" alt="">
         </a>
       </div>
 
       {% if user.is_authenticated %}
-      <div class="col-sm-10 col-xs-10 topbar__wrap">
+      <div class="col-sm-10 col-xs-10 col-md-10 col-lg-10 topbar__wrap">
         <a href="#" class='topbar__search topbar__icon mr-2' id="topbar-search-icon" onclick="toggleSearchForm()">
           <i class="fas fa-search"></i>
         </a>
@@ -89,7 +89,7 @@
       </div>
       <!-- If user is not signed -->
       {% else %}
-      <div class="topbar__wrap-no-auth col-sm-10 col-xs-10">
+      <div class="topbar__wrap-no-auth col-10 col-xs-10 col-md-10 col-lg-10">
         <div><a class=" mr-4" href="{% url 'login' %}">Sign in</a></div>
         <a class="btn btn-success my-2 my-sm-0 py-1" href="{% url 'register' %}">Getting
           Started</a>

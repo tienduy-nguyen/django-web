@@ -3,6 +3,7 @@ from django.http import HttpRequest
 from .models import Post, Category
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.views.generic import ListView
 
 
 def home(request):
@@ -10,15 +11,19 @@ def home(request):
     context = {
         'posts': posts
     }
+
+    if request.user.is_authenticated:
+        return render(request, 'blog/posts/postList.html', context)
     return render(request, 'blog/home.html', context)
 
 
-def postList(request):
-    posts = Post.objects.order_by('-create_at')
-    context = {
-        'posts': posts
-    }
-    return render(request, 'blog/posts/postList.html', context)
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog/posts/postList.html'
+    context_object_name = 'posts'
+
+
+# <app>/<model>_<viewtype>.html
 
 
 def postDetail(request, slug):

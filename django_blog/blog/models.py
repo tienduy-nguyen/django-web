@@ -3,8 +3,9 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 import uuid
 from taggit.managers import TaggableManager
-from .utils import unique_slug_generator
+from .utils import unique_slug_generator, get_read_time
 from django.db.models.signals import pre_save, post_save
+from PIL import Image
 
 # Create your models here.
 
@@ -30,17 +31,19 @@ class Category(models.Model):
 class Post(models.Model):
     catetory = models.ForeignKey(
         Category, verbose_name="Category", on_delete=models.CASCADE, related_name='blog_posts')
-    slug = models.SlugField(unique=True, max_length=200, blank=True)
     title = models.CharField(max_length=100, verbose_name="Title")
+    slug = models.SlugField(unique=True, max_length=200, blank=True)
     content = models.TextField(verbose_name="Content")
     tags = TaggableManager()
     author = models.ForeignKey(
         User, related_name="blog_posts", on_delete=models.CASCADE)
-    photo_main = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True)
+    photo_main = models.ImageField(
+        default='defaultPost.png', upload_to='photos/%Y/%m/%d/', blank=True)
     is_published = models.BooleanField(default=True)
     create_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Create at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Update at")
+    read_time = models.IntegerField(default=0, blank=True)
 
     class Meta:
         verbose_name = "Post"
@@ -63,6 +66,17 @@ class Post(models.Model):
 
     def get_delete_url(self):
         return f"{self.get_absolute_url()}/delete"
+
+     # Scale image before upload
+    def save(self, *args, **kwargs):
+        self.read_time = get_read_time(self.content)
+        super().save()
+
+        img = Image.open(self.photo_main.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.photo_main.path)
 
 
 # Create a unique slug

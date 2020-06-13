@@ -5,34 +5,10 @@
 {% block content %}
 {% load static %}
 <div class="container py-3 " style="min-height: 100vh;">
-  <!-- Alert -->
-  {% include 'partials/_alerts.html' %}
-  {% for post in posts %}
-  <!-- Show on mobile -->
-  <div class="card my-5 py-0" style="border:none">
-    <div class="row ">
-      <div class="col-8 col-sm-8 col-md-6 col-lg-6 px-2">
-        <div class="card-block p-0">
-          <span class="text-uppercase pt-2" style="font-weight:300; color:#a7a7a7"><small>FROM YOUR
-              NETWORK</small></span>
-          <a href="{% url 'postDetail' slug %}">
-            <h5 class="card-title">{{post.title}}</h5>
-          </a>
-          <p class="card-text text-muted text-justify">{{post.content | truncatewords:10}} </p>
-          <p class="card-text py-0 " style="line-height: 0px;"><small class="text-muted"><a
-                href="#">{{post.author}}</a></small></p>
-          <div class="post-info d-flex text-muted pt-1" style="line-height: 0px;">
-            <p class="card-text mr-2"><small>{{post.create_at| date:"F d, Y"}}</small></p>-
-            <p class="card-text ml-2"><small>5 min read &#9733;</small></p>
-          </div>
-        </div>
-      </div>
-      <div class="col-4 col-sm-4 col-md-2 col-lg-2 pt-3">
-        <img {% if post.photo_main %} src="{{post.photo_main.url}}" {%  else %} src="{% static 'img/defaultbg.jpg' %}"
-          {% endif %} class="card-image rounded mx-auto d-block" style="height: 16vh;width:20vh">
-      </div>
-    </div>
-  </div>
-  {% endfor %}
+  <h1>Well come to the Dblog</h1>
+  <h4>Click on getstarted to complete your registration </h4>
+  <h4>Or if you have already an account, you can login with in to read the excellent articles in dblog</h4>
+
+
 </div>
 {% endblock %}
