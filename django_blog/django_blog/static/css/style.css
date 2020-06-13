@@ -18,8 +18,8 @@ body {
 }
 
 /* Top bar */
-#topbar {
-  /* background-color: #f8f9fa; */
+.topbar-container {
+  width: 100%;
 }
 .topbar__wrap {
   align-items: center;

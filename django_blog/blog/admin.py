@@ -6,7 +6,7 @@ from .models import Post, Category
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'author', 'is_published',
-                    'create_at',)
+                    'created_at',)
     list_display_links = ('id', 'title', 'author', )
     list_per_page = 25
     list_filter = ('author', 'tags',)

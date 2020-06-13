@@ -11,5 +11,3 @@ urlpatterns = [
     path('category/<str:slug>/',
          views.categoryDetail, name='categoryDetail'),
 ]
-
-# <app>/<model>_<viewtype>.html

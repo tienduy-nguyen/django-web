@@ -40,7 +40,7 @@ class Post(models.Model):
     photo_main = models.ImageField(
         default='defaultPost.png', upload_to='photos/%Y/%m/%d/', blank=True)
     is_published = models.BooleanField(default=True)
-    create_at = models.DateTimeField(
+    created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Create at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Update at")
     read_time = models.IntegerField(default=0, blank=True)
@@ -48,7 +48,7 @@ class Post(models.Model):
     class Meta:
         verbose_name = "Post"
         verbose_name_plural = "Posts"
-        ordering = ['-create_at', '-updated_at']
+        ordering = ['-created_at', '-updated_at']
 
     def publish(self):
         self.is_published = True

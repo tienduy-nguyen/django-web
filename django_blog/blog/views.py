@@ -3,11 +3,11 @@ from django.http import HttpRequest
 from .models import Post, Category
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 
 def home(request):
-    posts = Post.objects.order_by('-create_at')
+    posts = Post.objects.order_by('-created_at')
     context = {
         'posts': posts
     }
@@ -21,15 +21,18 @@ class PostListView(ListView):
     model = Post
     template_name = 'blog/posts/postList.html'
     context_object_name = 'posts'
+    ordering = ['-created_at', '-updated_at']
 
 
-# <app>/<model>_<viewtype>.html
+class PostDetailView(DetailView):
+    model = Post
+    context_object_name = 'post'
 
 
 def postDetail(request, slug):
     post = get_object_or_404(Post, slug=slug)
     context = {
-        'posts': post
+        'post': post
     }
     return render(request, 'blog/posts/postDetail.html', context)
 

@@ -208,21 +208,20 @@
   from django.urls import path, include
   from django.conf import settings
   from django.conf.urls.static import static
+
+  urlpatterns = [
+  path('admin/', admin.site.urls),
+  path('', include('blog.urls'))
+  ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
   ```
-
-urlpatterns = [
-path('admin/', admin.site.urls),
-path('', include('blog.urls'))
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-````
 ## Using django-taggit
 
->django-taggit is a reusable able Django application designed to make adding tagging to your project esasy to your project easy.
+  >django-taggit is a reusable able Django application designed to make adding tagging to your project esasy to your project easy.
 - Installation
-```bash
-$ pip3 install django-taggit
-````
+  ```bash
+  $ pip3 install django-taggit
+  ```
 
 - Add "taggit" in INSTALLED_APPS of settings.py file
   ```python
@@ -296,33 +295,32 @@ $ pip3 install django-taggit
   from django.forms import ModelForm
   from django.contrib.auth.models import User
   from django.contrib.auth.forms import UserCreationForm
+
+  class RegistrationForm(UserCreationForm):
+  class Meta:
+  model = User
+  fields = (
+  'username',
+  'email',
+  'password1',
+  'password2',
+  )
+
   ```
-
-class RegistrationForm(UserCreationForm):
-class Meta:
-model = User
-fields = (
-'username',
-'email',
-'password1',
-'password2',
-)
-
-````
 - Call the field of Registration form in html
-```html
-<!-- register.html -->
-  <form method="POST" action="">
-      {% csrf_token %}
-      {{form.username}}
-      {{form.email}}
-      {{form.password1}}
-      {{form.password2}}
-      <div class="d-flex justify-content-center mt-4 login_container">
-        <input class="btn login_btn" type="submit" value="Register Account">
-      </div>
-  </form>
-````
+  ```html
+  <!-- register.html -->
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.username}}
+        {{form.email}}
+        {{form.password1}}
+        {{form.password2}}
+        <div class="d-flex justify-content-center mt-4 login_container">
+          <input class="btn login_btn" type="submit" value="Register Account">
+        </div>
+    </form>
+  ```
 
 - Login method in django
 
@@ -435,32 +433,31 @@ fields = (
   from django.contrib.auth.models import User
   from django.dispatch import receiver
   from .models import Profile
+
+  @receiver(post_save, sender=User)
+  def create_profile(sender, instance, created, \*\*kwargs):
+  if created:
+  Profile.objects.create(user=instance)
+
+  @receiver(post_save, sender=User)
+  def save_profile(sender, instance, \*\*kwargs):
+  instance.profile.save()
+
   ```
 
-@receiver(post_save, sender=User)
-def create_profile(sender, instance, created, \*\*kwargs):
-if created:
-Profile.objects.create(user=instance)
+  and add signals in apps.py
 
-@receiver(post_save, sender=User)
-def save_profile(sender, instance, \*\*kwargs):
-instance.profile.save()
+  ```python
+  # users/apps.py
+  from django.apps import AppConfig
 
-````
+  class UsersConfig(AppConfig):
+      name = 'users'
 
-and add signals in apps.py
+      def ready(self):
+          import users.signals
 
-```python
-# users/apps.py
-from django.apps import AppConfig
-
-class UsersConfig(AppConfig):
-    name = 'users'
-
-    def ready(self):
-        import users.signals
-
-````
+  ```
 
 - Small css framwork for django: crispy
 
@@ -532,36 +529,47 @@ class UsersConfig(AppConfig):
               'username',
               'email',
           ]
+
+  class ProfileUpdateForm(forms.ModelForm):
+      class Meta:
+      model = Profile
+      fields = ['image']
+
   ```
 
-class ProfileUpdateForm(forms.ModelForm):
-class Meta:
-model = Profile
-fields = ['image']
+  ```python
+    # users/views.py file
+    from django.contrib.auth.decorators import login_required
+    @login_required
+    def editProfile(request):
+        if request.method == 'POST':
+            userForm = UserUpdateForm(request.POST, isntance=request.user)
+            profileForm = ProfileUpdateForm(
+                request.POST, request.FILES, instance=request.user.profile)
+          if userForm is valid() and profileForm is valid():
+            userForm.save()
+            profileForm.save()
+        else:
+            userForm = UserUpdateForm(isntance=request.user)
+            profileForm = ProfileUpdateForm(instance=request.user.profile)
 
-````
-
-```python
-# users/views.py file
-from django.contrib.auth.decorators import login_required
-@login_required
-def editProfile(request):
-    if request.method == 'POST':
-        userForm = UserUpdateForm(request.POST, isntance=request.user)
-        profileForm = ProfileUpdateForm(
-            request.POST, request.FILES, instance=request.user.profile)
-      if userForm is valid() and profileForm is valid():
-        userForm.save()
-        profileForm.save()
-    else:
-        userForm = UserUpdateForm(isntance=request.user)
-        profileForm = ProfileUpdateForm(instance=request.user.profile)
-
-    context = {
-        'userForm': userForm,
-        'profileForm': profileForm
-    }
-    return render(request, 'users/profile.html', context)
-````
+        context = {
+            'userForm': userForm,
+            'profileForm': profileForm
+        }
+        return render(request, 'users/profile.html', context)
+  ```
 
 ## Create, update, post
+
+- Create class PostListView and PostDetailView
+  ```python
+  # blog/views.py
+  from django.views.generic import ListView, DetailView
+
+  class PostListView(ListView):
+      model = Post
+      template_name = 'blog/posts/postList.html'
+      context_object_name = 'posts'
+      ordering = ['-create_at', 'update_at']
+  ```
