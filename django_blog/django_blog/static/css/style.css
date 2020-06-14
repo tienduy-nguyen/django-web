@@ -139,7 +139,7 @@ body {
 
 /* Footer */
 .main-footer {
-  position: fixed;
+  position: relative;
   left: 0;
   bottom: 0;
   height: 60px;
@@ -183,4 +183,9 @@ body {
 }
 .social a:hover i {
   transform: scale(0.95);
+}
+
+/* Post details */
+.post__share {
+  font-size: 18px;
 }

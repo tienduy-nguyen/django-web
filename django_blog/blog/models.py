@@ -67,16 +67,22 @@ class Post(models.Model):
     def get_delete_url(self):
         return f"{self.get_absolute_url()}/delete"
 
+    def get_tag_names(self):
+        tagsList = []
+        for tag in self.tags.get_queryset():
+            tagsList.append(tag.name)
+        return tagsList
+
      # Scale image before upload
     def save(self, *args, **kwargs):
         self.read_time = get_read_time(self.content)
-        super().save()
+        # super().save()
 
-        img = Image.open(self.photo_main.path)
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.photo_main.path)
+        # img = Image.open(self.photo_main.path)
+        # if img.height > 300 or img.width > 300:
+        #     output_size = (300, 300)
+        #     img.thumbnail(output_size)
+        #     img.save(self.photo_main.path)
 
 
 # Create a unique slug
