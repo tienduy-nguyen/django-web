@@ -1,10 +1,17 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
+from django.utils.text import slugify
+from markdown_deux import markdown
+from django.utils.safestring import mark_safe
+from django.db.models import Count, QuerySet, F
 import uuid
 from taggit.managers import TaggableManager
 from .utils import unique_slug_generator, get_read_time
 from django.db.models.signals import pre_save, post_save
+# from comments.models import Comment
+from django.contrib.contenttypes.models import ContentType
 from PIL import Image
 
 # Create your models here.
@@ -60,6 +67,7 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return f"/{self.slug}"
+        # return reverse('postDetail', kwargs={'slug': f"/{self.slug}"})
 
     def get_edit_url(self):
         return f"{self.get_absolute_url()}/edit"
@@ -76,13 +84,36 @@ class Post(models.Model):
      # Scale image before upload
     def save(self, *args, **kwargs):
         self.read_time = get_read_time(self.content)
-        # super().save()
 
+        # Error Instance needs to have a primary key value before a ...
+        # https://stackoverflow.com/questions/12921783/instance-needs-to-have-a-primary-key-value-before-a-many-to-many-relationship-ca
+        super(Post, self).save(*args, **kwargs)
+        if self.pk:
+            pass
+
+        #   # Optimize image
         # img = Image.open(self.photo_main.path)
         # if img.height > 300 or img.width > 300:
         #     output_size = (300, 300)
         #     img.thumbnail(output_size)
         #     img.save(self.photo_main.path)
+
+    def get_markdown(self):
+        description = self.description
+        markdown_text = markdown(description)
+        return mark_safe(markdown_text)
+
+    # @property
+    # def comments(self):
+    #     instance = self
+    #     qs = Comment.objects.filter_by_instance(instance)
+    #     return qs
+
+    @property
+    def get_content_type(self):
+        instance = self
+        content_type = ContentType.objects.get_for_model(instance.__class__)
+        return content_type
 
 
 # Create a unique slug
