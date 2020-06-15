@@ -5,7 +5,7 @@ from .models import Post, Category
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
@@ -33,7 +33,7 @@ class PostDetailView(DetailView):
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
-    # login_url = '/acount/login/'
+    login_url = '/accounts/login/'
     # redirect_field_name = 'next'
     model = Post
     fields = ['catetory', 'title', 'slug', 'content', 'tags',
@@ -44,6 +44,26 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+
+
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    login_url = '/accounts/login/'
+    # redirect_field_name = 'next'
+    model = Post
+    fields = ['catetory', 'title', 'slug', 'content', 'tags',
+              'photo_main', 'is_published']
+    template_name = 'blog/posts/postCreate.html'
+    # context_object_name = 'post'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
 
 
 def postDetail(request, slug):
