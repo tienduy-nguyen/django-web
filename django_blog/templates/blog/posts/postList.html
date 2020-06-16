@@ -12,7 +12,7 @@
   <div class="card my-4 py-0" style="border:none">
     <div class="row ">
       <!-- Title and content post -->
-      <div class="col-8 col-sm-8 col-md-8 col-lg-8 px-2">
+      <div class="col-8 col-sm-8 col-md-6 col-lg-6 px-2">
         <div class="card-block p-0">
           <span class="text-uppercase pt-2" style="font-weight:300; color:#a7a7a7"><small>FROM YOUR
               NETWORK</small></span>
@@ -39,12 +39,57 @@
       </div>
 
       <!-- Section Image -->
-      <div class="col-4 col-sm-4 col-md-4 col-lg-4 pt-3">
+      <div class="col-4 col-sm-4 col-md-2 col-lg-2 pt-3">
         <img {% if post.photo_main %} src="{{post.photo_main.url}}" {%  else %} src="{% static 'img/defaultbg.jpg' %}"
           {% endif %} class="card-image rounded mx-auto d-block" style="height: 16vh;width:20vh">
       </div>
     </div>
   </div>
   {% endfor %}
+
+  <!-- Pagination -->
+  {% if is_paginated %}
+  <div class="row px-0">
+    <div class="col-md-12 col-lg-12 col-12 col-sm-12 px-0">
+      <ul class="pagination">
+        <!-- Previous page -->
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1">First</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+        </li>
+        {% endif %}
+
+        <!-- List all page -->
+        {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+        <li class="page-item active">
+          <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+        </li>
+
+        {% elif i > page_obj.number|add:'-3' and  i < page_obj.number|add:'3'%}
+        <li class="page-item">
+          <a href="?page={{ i }}" class="page-link">{{ i }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        <!-- Next page -->
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{page_obj.next_page_number}}">&raquo;</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.paginator.num_pages}}">Last</a>
+        </li>
+        {% endif %}
+
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+
 </div>
 {% endblock %}

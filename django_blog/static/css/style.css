@@ -9,15 +9,22 @@ html {
   font-size: 100%;
   line-height: 2.56rem;
 }
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-height: 100vh;
+}
 
 /* Top bar */
-#topbar {
-  /* background-color: #f8f9fa; */
+.topbar-container {
+  width: 100%;
 }
 .topbar__wrap {
   align-items: center;
   justify-content: flex-end;
-  display: none;
+  display: flex;
 }
 .topbar__wrap-no-auth {
   display: flex;
@@ -131,6 +138,14 @@ html {
 }
 
 /* Footer */
+.main-footer {
+  position: relative;
+  left: 0;
+  bottom: 0;
+  height: 60px;
+  width: 100%;
+  margin-bottom: 0px;
+}
 .footer__nav {
   list-style: none;
   display: flex;
@@ -168,4 +183,9 @@ html {
 }
 .social a:hover i {
   transform: scale(0.95);
+}
+
+/* Post details */
+.post__share {
+  font-size: 18px;
 }

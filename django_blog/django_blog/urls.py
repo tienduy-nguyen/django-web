@@ -9,7 +9,8 @@ from blog.views import handler404, handler500
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls')),
-    path('accounts/', include('users.urls'))
+    path('accounts/', include('users.urls')),
+    path('markdownx/', include('markdownx.urls')),
 ]
 
 handler404 = 'blog.views.handler404'

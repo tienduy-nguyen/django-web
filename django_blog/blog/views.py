@@ -22,11 +22,11 @@ def home(request):
 
 
 class PostListView(ListView):
-    paginate_by = 5
     model = Post
     template_name = 'blog/posts/postList.html'
     context_object_name = 'posts'
     ordering = ['-created_at', '-updated_at']
+    paginate_by = 5
 
 
 class PostListViewByAuthor(ListView):

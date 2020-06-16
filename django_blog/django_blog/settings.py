@@ -49,9 +49,31 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'taggit',
-    'markdown_deux'
+    'markdown_deux',
+    'markdownx',
+    'multiselectfield',
 ]
 TAGGIT_CASE_INSENSITIVE = True
+
+# Markdownify
+MARKDOWNX_MARKDOWNIFY_FUNCTION = 'markdownx.utils.markdownify'
+# Markdown extensions
+MARKDOWNX_MARKDOWN_EXTENSIONS = [
+    # 'fenced_code',
+    'codehilite',
+    # 'sane_lists',
+    # 'nl2br',
+    # 'extra',
+    'mdx_math',
+]
+# MarkDownX EXTENSIONS Settings
+MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
+    'markdown.extensions.codehilite': {
+        'linenums': True
+    }
+}
+# specify the code highlighting stylesheet used by `markdown.extensions.codehilite`
+CMSPLUGIN_MARKDOWNX_CODEHILITE_CSS = 'cmsplugin_markdownx/codehilite_colorful.css'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

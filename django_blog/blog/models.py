@@ -13,6 +13,11 @@ from django.db.models.signals import pre_save, post_save
 # from comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from PIL import Image
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
+from django.utils.safestring import mark_safe
+from multiselectfield import MultiSelectField
+from django.contrib.auth import get_user_model
 
 # Create your models here.
 
@@ -40,7 +45,7 @@ class Post(models.Model):
         Category, verbose_name="Category", on_delete=models.CASCADE, related_name='blog_posts')
     title = models.CharField(max_length=100, verbose_name="Title")
     slug = models.SlugField(unique=True, max_length=200, blank=True)
-    content = models.TextField(verbose_name="Content")
+    content = MarkdownxField()
     tags = TaggableManager()
     author = models.ForeignKey(
         User, related_name="blog_posts", on_delete=models.CASCADE)
@@ -98,10 +103,9 @@ class Post(models.Model):
         #     img.thumbnail(output_size)
         #     img.save(self.photo_main.path)
 
-    def get_markdown(self):
-        description = self.description
-        markdown_text = markdown(description)
-        return mark_safe(markdown_text)
+    @property
+    def formatted_markdown(self):
+        return mark_safe(markdownify(self.content))
 
     # @property
     # def comments(self):
@@ -123,3 +127,47 @@ def pre_save_receiver(sender, instance, *args, **kwargs):
 
 
 pre_save.connect(pre_save_receiver, sender=Post)
+
+
+# class Question(models.Model):
+#     question_id = models.AutoField('ID', primary_key=True)
+#     question_creation_date = models.DateTimeField(
+#         'Erstellungsdatum', auto_now_add=True,)
+#     question_text = MarkdownxField('', blank=False)
+#     question_distractor_a = models.CharField('', max_length=100, blank=True)
+#     question_distractor_b = models.CharField('', max_length=100, blank=True)
+#     question_distractor_c = models.CharField('', max_length=100, blank=True)
+#     question_distractor_d = models.CharField('', max_length=100, blank=True)
+#     question_distractor_e = models.CharField('', max_length=100, blank=True)
+#     question_solution = models.CharField('', max_length=100, blank=True)
+#     question_points = models.CharField(
+#         'Punkte', max_length=1, choices=POINTS, default='')
+#     question_year = MultiSelectField('Klasse', choices=YEARS, max_choices=8)
+#     question_category = models.CharField('Themengebiet', max_length=50, choices=CATEGORY, blank=True,
+#                                          default='')
+#     question_image = models.FileField(
+#         'Bild', upload_to='media/', default='', blank=True)
+#     question_round = models.CharField(
+#         'Runde', max_length=15, choices=ROUND, blank=True)
+
+#     def __str__(self):
+#         return str(self.question_id)
+
+
+# class Comment(models.Model):
+#     question = models.ForeignKey(
+#         Question, on_delete=models.CASCADE, related_name='comments')
+#     comment = models.TextField('')
+#     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+#     date = models.DateTimeField(auto_now_add=True)
+#     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True,
+#                                related_name='replies')
+
+#     class Meta:
+#         ordering = ['date']
+
+#     def __str__(self):
+#         return self.comment
+
+#     def get_absolute_url(self):
+#         return reverse('question_detail', kwargs={'pk': self.pk})
