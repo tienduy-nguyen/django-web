@@ -23,6 +23,9 @@ class Profile(models.Model):
             img.thumbnail(output_size)
             img.save(self.image.path)
 
-# Add class following
 
-# Add class followers
+class UserFollower(models.Model):
+    following = models.OneToOneField(
+        Profile, on_delete=models.CASCADE, related_name="following")
+    followers = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="followers",   blank=True)

@@ -4,7 +4,14 @@
 {% block content %}
 {% load static %}
 <div class="container py-3 px-2" style="min-height: 100vh;">
-  <h2 class="text-left">{{post.title}}</h2>
+  {% if user == post.author %}
+  <div class="form-group">
+    <a class="btn btn-outline-info" href="{% url 'postUpdate' object.slug %}">Edit this Post</a>
+    <a class="btn btn-outline-danger" href="{% url 'postDelete' object.slug %}">Delete this Post</a>
+  </div>
+  {% endif %}
+
+  <h2 class="text-left mt-2">{{post.title}}</h2>
 
   <div class="post__writer px-0">
     <div class="row">

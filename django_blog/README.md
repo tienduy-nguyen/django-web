@@ -561,16 +561,99 @@
   ```
 
 
-## Create, update, post
+## Create, Read, update and delete in django
 
-- Create class PostListView and PostDetailView
+- Using ListView and DetailView for creating a new post
   ```python
   # blog/views.py
-  from django.views.generic import ListView, DetailView
+
+  from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+  from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
   class PostListView(ListView):
       model = Post
       template_name = 'blog/posts/postList.html'
       context_object_name = 'posts'
       ordering = ['-create_at', 'update_at']
+
+  class PostDetailView(DetailView):
+      model = Post
+      template_name = 'blog/posts/postDetail.html'
+      context_object_name = 'post'
+
+  # LoginRequireMixin: Check authentication before accès the url /post/new
+  class PostCreateView(LoginRequiredMixin, CreateView):
+      login_url = '/accounts/login/' # url to call the login page
+      # redirect_field_name = 'next' 
+      model = Post
+      fields = ['catetory', 'title', 'slug', 'content', 'tags',
+                'photo_main', 'is_published']
+      template_name = 'blog/posts/postCreate.html'
+      # context_object_name = 'post'
+
+      def form_valid(self, form):
+          form.instance.author = self.request.user
+          return super().form_valid(form)
+
+  ```
+  we will use thes class in urls.py
+  ```python
+  # blog/urls.py
+  from django.urls import path
+  from . import views
+  from .views import PostListView, PostDetailView, PostCreateView, PostUpdateView, PostDeleteView
+
+  urlpatterns = [
+      # path('', views.home, name='home'),
+      path('', PostListView.as_view(), name='home'),
+      path('about/', views.about, name='about'),
+      path('<str:slug>/', PostDetailView.as_view(), name='postDetail'),
+      path('post/new/', PostCreateView.as_view(), name='postCreate'),
+      path('<str:slug>/update/', PostUpdateView.as_view(), name='postUpdate'),
+      path('<str:slug>/delete/', PostDeleteView.as_view(), name='postDelete'),
+      path('category/', views.categoryList, name='categoryList'),
+      path('category/<str:slug>/',
+          views.categoryDetail, name='categoryDetail'),
+  ]
+
+  ```
+
+- Using UpdateView for updating a post
+  ```python
+  # blog/views.py
+  class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    login_url = '/accounts/login/'
+    # redirect_field_name = 'next'
+    model = Post
+    fields = ['catetory', 'title', 'slug', 'content', 'tags',
+              'photo_main', 'is_published']
+    template_name = 'blog/posts/postCreate.html'
+    # context_object_name = 'post'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    # Check if user is author of article: UserPassesTestMixin
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
+  ```
+
+- Using DeleteView for deleting
+  ```python
+
+  class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+      login_url = '/accounts/login/'
+      # redirect_field_name = 'next'
+      model = Post
+      success_url = '/'
+
+      def test_func(self):
+          post = self.get_object()
+          if self.request.user == post.author:
+              return True
+          return False
   ```

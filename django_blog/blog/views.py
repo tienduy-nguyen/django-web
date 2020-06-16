@@ -8,6 +8,8 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView, U
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
+# Obsolete
+
 
 def home(request):
     posts = Post.objects.order_by('-created_at')
@@ -20,10 +22,21 @@ def home(request):
 
 
 class PostListView(ListView):
+    paginate_by = 5
     model = Post
     template_name = 'blog/posts/postList.html'
     context_object_name = 'posts'
     ordering = ['-created_at', '-updated_at']
+
+
+class PostListViewByAuthor(ListView):
+    model = Post
+    template_name = 'blog/posts/postList.html'
+    context_object_name = 'posts'
+    ordering = ['-created_at', '-updated_at']
+
+    def get_queryset(self):
+        return Post.objects.filter(username=self.request.user.username)
 
 
 class PostDetailView(DetailView):
@@ -64,6 +77,21 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user == post.author:
             return True
         return False
+
+
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    login_url = '/accounts/login/'
+    # redirect_field_name = 'next'
+    model = Post
+    success_url = '/'
+
+    def test_func(self):
+        post = self.get_object()
+        if self.request.user == post.author:
+            return True
+        return False
+
+# Obsolete
 
 
 def postDetail(request, slug):
