@@ -6,6 +6,7 @@ from .forms import RegistrationForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
 from blog.models import Post
+from django.core.paginator import Paginator
 
 
 # Log actions of django
@@ -82,15 +83,18 @@ def profile(request, user_slug):
     # user_profile = Profile.objects.get(user__username=user_slug)
     userFound = get_object_or_404(User, username=user_slug)
     posts = Post.objects.filter(author=userFound).order_by('-created_at')
+    paginator = Paginator(posts, 10)
+    page = request.GET.get('page')
+    paged_posts = paginator.get_page(page)
     if userFound is not None:
         context = {
             'user_view': userFound,
-            'posts': posts
+            'posts': paged_posts
         }
         return render(request, 'users/profile.html', context)
     else:
         context = {
-            'posts': posts
+            'posts': paged_posts
         }
         return render(request, 'users/profile.html', context)
 
