@@ -5,17 +5,19 @@
 {% block content %}
 {% if user.username == user_view.username %}
 <div class="content-section container pt-5 ml-auto " style="min-height: 100vh;">
-  <div class="col-md-8 col-lg-8">
+  <div class="col-md-12 col-lg-8">
     <!-- Same user -->
     <div class="profile-info-general">
       <div class="media pb-5">
         <img src="{{ user.profile.image.url }}" alt="" class="rounded-circle account-img mr-4" style="height: 100px;">
         <div class="media-body">
-          <h3 class='account-heading'>
+          <h3 class='account-heading py-0'>
             {{ user.get_full_name |default:user.username}}
           </h3>
-          <p class='text-secondary'>{{ user.profile.bio}}</p>
-          <small class="d-flex">
+          <p class='text-secondary'><small>{{ user.profile.bio}}</small></p>
+          <p class=''>{{ user.profile.job}}</p>
+          <span class=''><small>Dblog member since {{ user.date_joined|date:"F d, Y"}}</small></span>
+          <small class="d-flex py-0 my-0">
             <a class="mr-4 text-muted" href="#">20 Following</a>
             <a class="text-muted" href="#">0 Followers</a>
           </small>
@@ -36,7 +38,7 @@
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
         <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-          aria-selected="false">Profile</a>
+          aria-selected="false">Series</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="clabs-tab" data-toggle="tab" href="#clabs" role="tab" aria-controls="clabs"
@@ -52,7 +54,9 @@
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+      <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        {% include 'blog/posts/userPostList.html' %}
+      </div>
       <div class="tab-pane fade" id="clabs" role="tabpanel" aria-labelledby="clabs-tab">...</div>
       <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="comment-tab">...</div>
       <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
@@ -72,7 +76,7 @@
 
 {% else %}
 <div class="content-section container pt-5 ml-auto" style="min-height:100vh">
-  <div class="col-md-8 col-lg-8">
+  <div class="col-md-12 col-lg-8">
     <!-- View user account public -->
     <div class="profile-info-general ">
       <div class="media pb-5 d-flex">
@@ -85,7 +89,8 @@
               style="line-height: 0px;height:18px; position:relative;margin-top:6px"><small>Follow</small></button>
 
           </div>
-          <p class='text-secondary'>{{ user_view.profile.bio}}</p>
+          <p class='text-secondary'><small>{{ user_view.profile.bio}}</small></p>
+          <p class=''>{{ user_view.profile.job}}</p>
           <small class="d-flex">
             <a class="mr-4 text-muted" href="#">20 Following</a>
             <a class="text-muted" href="#">0 Followers</a>
@@ -100,12 +105,16 @@
     <!-- Nav here -->
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
-          aria-selected="false">Profile</a>
+        <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+          aria-selected="false">Series</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+        <a class="nav-link" id="clabs-tab" data-toggle="tab" href="#clabs" role="tab" aria-controls="clabs"
           aria-selected="false">Claps</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="comment-tab" data-toggle="tab" href="#comment" role="tab" aria-controls="comment"
+          aria-selected="false">Comments</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
@@ -113,9 +122,20 @@
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
-      <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
-      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+      <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+        {% include 'blog/posts/userPostList.html' %}
+      </div>
+      <div class="tab-pane fade" id="clabs" role="tabpanel" aria-labelledby="clabs-tab">...</div>
+      <div class="tab-pane fade" id="comment" role="tabpanel" aria-labelledby="comment-tab">...</div>
+      <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+        <div class="pt-4">
+          <small>
+            <p class='text-secondary'>Username: {{ user_view.username}}</p>
+            <p class="text-secondary">Email address: {{user_view.email}}</p>
+          </small>
+
+        </div>
+      </div>
     </div>
   </div>
 

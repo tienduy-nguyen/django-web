@@ -9,10 +9,13 @@
   <!-- Form here -->
   <form method='POST' enctype="multipart/form-data">
     {% csrf_token %}
-    <a href="{% url 'home' %}" class="btn btn-light mb-3">Back to Home</a>
+    <a href="{% url 'postDetail' object.slug %}" class="btn btn-light mb-3">Back to this Post</a>
     <fieldset class='form-group'>
       <!-- <legend class='border-bottom mb-4'>Delete post</legend> -->
       <h4 style="color:red">Are you sure you want to delete the post "{{ object.title}}"</h4>
+      <small>
+        <p class="text-muted">Slug: https://{{request.get_host}}/{{object.slug}}</p>
+      </small>
     </fieldset>
     <div class="form-group">
       <button class="btn btn-outline-danger" type="submit">Yes, delete</button>

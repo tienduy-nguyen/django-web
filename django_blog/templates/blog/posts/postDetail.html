@@ -55,14 +55,14 @@
         <a href="#" data-toggle="tooltip" title="Save story"><i class="far fa-bookmark"></i></a>
       </div>
     </div>
-    <div class="row py-3 flex-column">
+    <div class="row mt-4 mb-2 flex-column">
       <img class="img-fluid rounded mx-auto" src="{{post.photo_main.url}}"><br>
       <div class="post__content pt-3 text-justify">
         <p>{{post.formatted_markdown|safe }}</p>
 
       </div>
     </div>
-    <div class="row post__tags pt-3">
+    <div class="row post__tags">
       {% for tag in post.get_tag_names %}
       <a href="#tags" class="btn mr-2 py-0" style="background-color: #ececec;"><small>{{tag}}</small></a>
       {% endfor %}

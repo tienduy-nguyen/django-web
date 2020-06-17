@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.auth.models import User
 
 # Obsolete
 
@@ -26,17 +27,18 @@ class PostListView(ListView):
     template_name = 'blog/posts/postList.html'
     context_object_name = 'posts'
     ordering = ['-created_at', '-updated_at']
-    paginate_by = 5
+    paginate_by = 10
 
 
-class PostListViewByAuthor(ListView):
+class UserPostListView(ListView):
     model = Post
-    template_name = 'blog/posts/postList.html'
+    template_name = 'blog/posts/userPostList.html'
     context_object_name = 'posts'
-    ordering = ['-created_at', '-updated_at']
+    paginate_by = 10
 
     def get_queryset(self):
-        return Post.objects.filter(username=self.request.user.username)
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Post.objects.filter(author=user).order_by('-date_posted')
 
 
 class PostDetailView(DetailView):
@@ -82,6 +84,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     login_url = '/accounts/login/'
     # redirect_field_name = 'next'
+    template_name = 'blog/posts/postDelete.html'
     model = Post
     success_url = '/'
 

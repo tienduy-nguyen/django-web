@@ -5,6 +5,7 @@ from django.contrib.auth.models import User, auth
 from .forms import RegistrationForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from blog.models import Post
 
 
 # Log actions of django
@@ -80,9 +81,16 @@ def logout(request):
 def profile(request, user_slug):
     # user_profile = Profile.objects.get(user__username=user_slug)
     userFound = get_object_or_404(User, username=user_slug)
+    posts = Post.objects.filter(author=userFound).order_by('-created_at')
     if userFound is not None:
         context = {
-            'user_view': userFound
+            'user_view': userFound,
+            'posts': posts
+        }
+        return render(request, 'users/profile.html', context)
+    else:
+        context = {
+            'posts': posts
         }
         return render(request, 'users/profile.html', context)
 
