@@ -49,7 +49,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     login_url = '/accounts/login/'
     # redirect_field_name = 'next'
     model = Post
-    fields = ['catetory', 'title', 'slug', 'content', 'tags',
+    fields = ['catetory', 'title', 'slug', 'description', 'content', 'tags',
               'photo_main', 'is_published']
     template_name = 'blog/posts/postCreate.html'
     # context_object_name = 'post'
@@ -63,7 +63,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     login_url = '/accounts/login/'
     # redirect_field_name = 'next'
     model = Post
-    fields = ['catetory', 'title', 'slug', 'content', 'tags',
+    fields = ['catetory', 'title', 'slug', 'description', 'content', 'tags',
               'photo_main', 'is_published']
     template_name = 'blog/posts/postCreate.html'
     # context_object_name = 'post'

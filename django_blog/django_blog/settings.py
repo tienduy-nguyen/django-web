@@ -61,9 +61,9 @@ MARKDOWNX_MARKDOWNIFY_FUNCTION = 'markdownx.utils.markdownify'
 MARKDOWNX_MARKDOWN_EXTENSIONS = [
     # 'fenced_code',
     'codehilite',
-    # 'sane_lists',
-    # 'nl2br',
-    # 'extra',
+    # 'markdown.extensions.sane_lists',
+    # 'markdown.extensions.nl2br',
+    # 'markdown.extensions.extra',
     'mdx_math',
 ]
 # MarkDownX EXTENSIONS Settings

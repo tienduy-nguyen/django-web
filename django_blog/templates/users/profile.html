@@ -14,7 +14,7 @@
           <h3 class='account-heading'>
             {{ user.get_full_name |default:user.username}}
           </h3>
-          <p class='text-secondary'>{{ user.profile.status}}</p>
+          <p class='text-secondary'>{{ user.profile.bio}}</p>
           <small class="d-flex">
             <a class="mr-4 text-muted" href="#">20 Following</a>
             <a class="text-muted" href="#">0 Followers</a>
@@ -85,7 +85,7 @@
               style="line-height: 0px;height:18px; position:relative;margin-top:6px"><small>Follow</small></button>
 
           </div>
-          <p class='text-secondary'>{{ user_view.profile.status}}</p>
+          <p class='text-secondary'>{{ user_view.profile.bio}}</p>
           <small class="d-flex">
             <a class="mr-4 text-muted" href="#">20 Following</a>
             <a class="text-muted" href="#">0 Followers</a>

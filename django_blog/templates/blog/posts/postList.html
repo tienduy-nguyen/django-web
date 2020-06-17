@@ -19,9 +19,11 @@
           <a href="{% url 'postDetail' post.slug %}">
             <h5 class="card-title">{{post.title}}</h5>
           </a>
-          <p class="card-text text-muted text-justify">{{post.content | truncatewords:10}} </p>
-          <p class="card-text py-0 " style="line-height: 0px;"><small class="text-muted"><a
-                href="{% url 'profile' post.author.username %}">{{post.author}}</a></small></p>
+          <p class="card-text text-muted text-justify">{{post.description|truncatewords:10}} </p>
+          <p class="card-text py-0" style="line-height: 0px;"><small><a class=""
+                href="{% url 'profile' post.author.username %}"
+                style="color:#047adb">{{post.author.get_full_name |default:post.author.username}}</a></small>
+          </p>
           <div class="post-info d-flex text-muted pt-1" style="line-height: 0px;">
             <p class="card-text mr-2"><small>{{post.created_at| date:"F d, Y"}}</small></p>-
             <p class="card-text ml-2">

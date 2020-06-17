@@ -44,18 +44,23 @@ class Post(models.Model):
     catetory = models.ForeignKey(
         Category, verbose_name="Category", on_delete=models.CASCADE, related_name='blog_posts')
     title = models.CharField(max_length=100, verbose_name="Title")
-    slug = models.SlugField(unique=True, max_length=200, blank=True)
-    content = MarkdownxField()
-    tags = TaggableManager()
+    slug = models.SlugField(unique=True, max_length=200,
+                            blank=True, verbose_name="Slug of post")
+    description = models.TextField(
+        blank=True, verbose_name="Why this article?")
+    content = MarkdownxField(verbose_name="Post Content")
+    tags = TaggableManager(blank=True)
     author = models.ForeignKey(
         User, related_name="blog_posts", on_delete=models.CASCADE)
     photo_main = models.ImageField(
         default='defaultPost.png', upload_to='photos/%Y/%m/%d/', blank=True)
     is_published = models.BooleanField(default=True)
+    allow_comments = models.BooleanField(default=True)
     created_at = models.DateTimeField(
         auto_now_add=True, verbose_name="Create at")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Update at")
-    read_time = models.IntegerField(default=0, blank=True)
+    read_time = models.IntegerField(
+        default=0, blank=True, verbose_name="Read time")
 
     class Meta:
         verbose_name = "Post"
