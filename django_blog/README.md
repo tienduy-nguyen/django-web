@@ -663,11 +663,7 @@
 
 
 ## Reset password in django
-- Configure email in the settings.py file
-  ```python
-  #django_blog/settings.py
 
-  ```
 - Tips hiding passwords and secret keys in enviroment variables
   
   Open terminal (we in home folder by default ~), open .bash_profile file and edit it
@@ -684,3 +680,48 @@
   # eg
   SECRET_KEY = os.environ.get("SECRET_KEY")
   ```
+- Configure email in the settings.py file
+  ```python
+  #django_blog/settings.py
+  # Using gmail as a email host
+  EMAIL_USE_TLS = True
+  EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+  EMAIL_HOST = 'smtp.gmail.com'
+  EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+  EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+  EMAIL_PORT = 587
+  ```
+- Creates routes provide by django for reseting password
+  ```python
+  # users/urls.py
+  from django.contrib.auth import views as auth_views
+  urlpatterns = [
+  path('login/', views.login, name='login'),
+  path('register/', views.register, name='register'),
+  path('@<str:user_slug>/', views.profile, name='profile'),
+  path('profile/edit/', views.editProfile, name='editProfile'),
+  path('logout/', views.logout, name='logout'),
+  path('password-reset/', auth_views.PasswordResetView.as_view(
+      template_name="users/passwordReset.html"), name='password_reset'),
+  path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name="users/passwordResetDone.html"),
+        name='password_reset_done'),
+  path('password-reset-confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="users/passwordResetConfirm.html"),
+        name='password_reset_confirm'),
+  path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name="users/passwordResetComplete.html"),
+        name='password_reset_complete'),
+
+  ]
+
+  ```
+  And create the html file for each route
+
+## Deploy django project
+
+- Using AWS for upload files
+  
+  Create account
+  Create project
+  Create user
+  Set enviroment variable key for aws key
+  Install package boto3 and django-storages
+  Settings files
