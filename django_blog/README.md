@@ -215,10 +215,13 @@
   ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
   ```
+
 ## Using django-taggit
 
-  >django-taggit is a reusable able Django application designed to make adding tagging to your project esasy to your project easy.
+> django-taggit is a reusable able Django application designed to make adding tagging to your project esasy to your project easy.
+
 - Installation
+
   ```bash
   $ pip3 install django-taggit
   ```
@@ -290,6 +293,7 @@
   ```
 
 - How to customize a form of django framwork for registration
+
   ```python
   from django import forms
   from django.forms import ModelForm
@@ -307,19 +311,18 @@
   )
 
   ```
+
 - Call the field of Registration form in html
+
   ```html
   <!-- register.html -->
-    <form method="POST" action="">
-        {% csrf_token %}
-        {{form.username}}
-        {{form.email}}
-        {{form.password1}}
-        {{form.password2}}
-        <div class="d-flex justify-content-center mt-4 login_container">
-          <input class="btn login_btn" type="submit" value="Register Account">
-        </div>
-    </form>
+  <form method="POST" action="">
+    {% csrf_token %} {{form.username}} {{form.email}} {{form.password1}}
+    {{form.password2}}
+    <div class="d-flex justify-content-center mt-4 login_container">
+      <input class="btn login_btn" type="submit" value="Register Account" />
+    </div>
+  </form>
   ```
 
 - Login method in django
@@ -427,6 +430,7 @@
   ```
 
 - Create profile direct with django signals
+
   ```python
   # users/signals.py
   from django.db.models.signals import post_save
@@ -560,10 +564,10 @@
         return render(request, 'users/profile.html', context)
   ```
 
-
 ## Create, Read, update and delete in django
 
 - Using ListView and DetailView for creating a new post
+
   ```python
   # blog/views.py
 
@@ -584,7 +588,7 @@
   # LoginRequireMixin: Check authentication before accès the url /post/new
   class PostCreateView(LoginRequiredMixin, CreateView):
       login_url = '/accounts/login/' # url to call the login page
-      # redirect_field_name = 'next' 
+      # redirect_field_name = 'next'
       model = Post
       fields = ['catetory', 'title', 'slug', 'content', 'tags',
                 'photo_main', 'is_published']
@@ -596,7 +600,9 @@
           return super().form_valid(form)
 
   ```
+
   we will use thes class in urls.py
+
   ```python
   # blog/urls.py
   from django.urls import path
@@ -619,6 +625,7 @@
   ```
 
 - Using UpdateView for updating a post
+
   ```python
   # blog/views.py
   class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -643,6 +650,7 @@
   ```
 
 - Using DeleteView for deleting
+
   ```python
 
   class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -658,20 +666,20 @@
           return False
   ```
 
-
 ## Pagination in django
-
 
 ## Reset password in django
 
 - Tips hiding passwords and secret keys in enviroment variables
-  
+
   Open terminal (we in home folder by default ~), open .bash_profile file and edit it
+
   ```bash
   vim .bash_profile
   ```
+
   we add the key words we need here
-  
+
   eg. export SECRET_KEY="somesecretkey"
 
   After that, we can use them in python file
@@ -680,6 +688,7 @@
   # eg
   SECRET_KEY = os.environ.get("SECRET_KEY")
   ```
+
 - Configure email in the settings.py file
   ```python
   #django_blog/settings.py
@@ -692,6 +701,7 @@
   EMAIL_PORT = 587
   ```
 - Creates routes provide by django for reseting password
+
   ```python
   # users/urls.py
   from django.contrib.auth import views as auth_views
@@ -713,15 +723,38 @@
   ]
 
   ```
+
   And create the html file for each route
 
 ## Deploy django project
 
 - Using AWS for upload files
-  
+
   Create account
+
   Create project
+
   Create user
+
   Set enviroment variable key for aws key
+
   Install package boto3 and django-storages
+
   Settings files
+
+  ```python
+  # django_blog/settings file
+  # Storage fo aws
+  INSTALLED_APPS = [
+  ....,
+  'storages'
+  ]
+
+  AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+  AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+  AWS_STORAGE_BUKET_NAME = os.environ.get('AWS_STORAGE_BUKET_NAME ')
+
+  AWS_S3_FILE_OVERWRITE = False
+  AWS_DEFAULT_ACL = None
+  DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+  ```
