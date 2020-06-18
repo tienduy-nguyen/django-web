@@ -657,3 +657,30 @@
               return True
           return False
   ```
+
+
+## Pagination in django
+
+
+## Reset password in django
+- Configure email in the settings.py file
+  ```python
+  #django_blog/settings.py
+
+  ```
+- Tips hiding passwords and secret keys in enviroment variables
+  
+  Open terminal (we in home folder by default ~), open .bash_profile file and edit it
+  ```bash
+  vim .bash_profile
+  ```
+  we add the key words we need here
+  
+  eg. export SECRET_KEY="somesecretkey"
+
+  After that, we can use them in python file
+
+  ```python
+  # eg
+  SECRET_KEY = os.environ.get("SECRET_KEY")
+  ```
