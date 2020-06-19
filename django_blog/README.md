@@ -726,19 +726,18 @@
 
   And create the html file for each route
 
-## Deploy django project
+## Amazone Web Sevices
 
-- Using AWS for upload files
+Using Amazon Web Services (AWS) S3 For storing static and media files for a Django Project.
 
-  Create account
-
-  Create project
-
-  Create user
+  Create AWS account and importants steps [step by step](./DeployAWS.md)
 
   Set enviroment variable key for aws key
 
   Install package boto3 and django-storages
+  ```bash
+  pip3 install boto3 django-storages
+  ```
 
   Settings files
 
@@ -758,3 +757,22 @@
   AWS_DEFAULT_ACL = None
   DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
   ```
+
+## Deploy on Heroku
+
+- Make sure we install gunicorn, whitenoise
+
+  ```bash
+  pip3 install gunicorn dj-database-url psycopg2 whitenoise
+  ```
+
+  [Check detail whitenoise documentation](http://whitenoise.evans.io/en/stable/)
+
+- Create requirement.txt for heroku
+  ```bash
+  pip3 freeze > requirement.txt
+  ```
+- Create Procfile
+  
+  Paste this content in the procfile
+  >web: gunicorn django_blog.wsgi --log-file -
