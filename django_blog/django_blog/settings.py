@@ -78,6 +78,7 @@ CMSPLUGIN_MARKDOWNX_CODEHILITE_CSS = 'cmsplugin_markdownx/codehilite_colorful.cs
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -172,6 +173,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'django_blog/static')
 ]
+# Using Whitenose : static file serving for Python web apps
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # LOGIN_URL = '/'
 # LOGIN_REDIRECT_URL = '/'
