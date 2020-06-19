@@ -29,10 +29,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Add domain name here if we need deploy online
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['td-dblog.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
