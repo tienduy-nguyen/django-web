@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.utils.text import slugify
-from markdown_deux import markdown
+# from markdown_deux import markdown
 from django.utils.safestring import mark_safe
 from django.db.models import Count, QuerySet, F
 import uuid

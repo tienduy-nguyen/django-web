@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'taggit',
-    'markdown_deux',
     'markdownx',
     'multiselectfield',
     'storages',
@@ -65,7 +64,7 @@ MARKDOWNX_MARKDOWN_EXTENSIONS = [
     # 'markdown.extensions.sane_lists',
     # 'markdown.extensions.nl2br',
     # 'markdown.extensions.extra',
-    'mdx_math',
+    # 'mdx_math',
 ]
 # MarkDownX EXTENSIONS Settings
 MARKDOWNX_MARKDOWN_EXTENSION_CONFIGS = {
