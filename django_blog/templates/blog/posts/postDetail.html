@@ -3,22 +3,25 @@
 
 {% block content %}
 {% load static %}
-<div class="container py-3 px-2" style="min-height: 100vh;">
-  <a href="{% url 'home' %}" class="btn btn-light mb-3">Back to Home</a>
-  {% if user == post.author %}
-  <div class="form-group">
-    <a class="btn btn-outline-info" href="{% url 'postUpdate' object.slug %}">Edit this Post</a>
-    <a class="btn btn-outline-danger" href="{% url 'postDelete' object.slug %}">Delete this Post</a>
+<div class="container py-3 px-2 mx-auto" style="min-height: 100vh;">
+  <div class="col-lg-8 mx-auto">
+    <a href="{% url 'home' %}" class="btn btn-light mb-3">Back to Home</a>
+    {% if user == post.author %}
+    <div class="form-group">
+      <a class="btn btn-outline-info" href="{% url 'postUpdate' object.slug %}">Edit this Post</a>
+      <a class="btn btn-outline-danger" href="{% url 'postDelete' object.slug %}">Delete this Post</a>
+    </div>
+    {% endif %}
+
+    <h2 class="text-left mt-2">{{post.title}}</h2>
+    <p class="text-muted">{{post.description}}</p>
+
   </div>
-  {% endif %}
 
-  <h2 class="text-left mt-2">{{post.title}}</h2>
-  <p class="text-muted">{{post.description}}</p>
-
-  <div class="post__writer px-0">
-    <div class="row">
+  <div class="post__writer px-0 col-lg-8 mx-auto">
+    <div class="row mx-auto">
       <!-- Information writer -->
-      <div class="post__writer-info px-0 col-12 col-sm-12 col-md-6 col-lg-6">
+      <div class="post__writer-info px-0 col-12 col-sm-12 col-md-6 col-lg-4 mx-auto">
         <div class="post__writer-img d-flex pt-2">
           <img src="{{ post.author.profile.image.url }}" class="rounded-circle account-img"
             style="height: 50px;width:50px">
@@ -48,7 +51,7 @@
       </div>
 
       <!-- Share article -->
-      <div class="post__share align-self-end d-flex justify-content-end pl-3 col-12 col-sm-12 col-md-6 col-lg-6 ">
+      <div class="post__share align-self-end d-flex justify-content-end pl-3 col-12 col-sm-12 col-md-6 col-lg-4">
         <a href="#" data-toggle="tooltip" title="Share on Twitter"><i class="fab fa-twitter mr-2"></i></a>
         <a href="#" data-toggle="tooltip" title="Share on LinkedIn"><i class="fab fa-linkedin mr-2"></i></a>
         <a href="#" data-toggle="tooltip" title="Share on facebook"><i class="fab fa-facebook-square mr-2"></i></a>
@@ -120,7 +123,7 @@
 <div class="bg-light">
   <div class="container">
     <div class="row">
-      <h4>More from Dblog</h4>
+      <h4 class="text-center">More from Dblog</h4>
       <hr>
     </div>
   </div>
