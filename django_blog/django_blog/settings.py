@@ -32,8 +32,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = True
 
 # Add domain name here if we need deploy online
-ALLOWED_HOSTS = ['td-dblog.herokuapp.com', 'localhost', '127.0.0.1']
-
+ALLOWED_HOSTS = ['td-dblog.herokuapp.com', '*']
 
 # Application definition
 
@@ -130,6 +129,9 @@ DATABASES = {
         'HOST': 'localhost'
     }
 }
+import dj_database_url
+db_from_env=dj_database_url.config(conn_max_age=600,ssl_require=True)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation

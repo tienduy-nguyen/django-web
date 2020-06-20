@@ -770,9 +770,20 @@ Using Amazon Web Services (AWS) S3 For storing static and media files for a Djan
 
 - Create requirement.txt for heroku
   ```bash
-  pip3 freeze > requirement.txt
+  pip3 freeze > requirements.txt
   ```
 - Create Procfile
   
   Paste this content in the procfile
   >web: gunicorn django_blog.wsgi --log-file -
+
+## Postgresql database on Heroku
+- Create addon heroku
+  ```bash
+  heroku addons:create heroku-postgresql:hobby-dev
+  ```
+- Make sure we installed dj-database-rul
+  ```bash
+  pip3 install dj-databse-url
+  ```
+  [Document dj-database-url](https://pypi.org/project/dj-database-url/)

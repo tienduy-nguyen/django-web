@@ -2,7 +2,6 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest, Http404, HttpResponseNotFound
 from django.db.models import Q
 from .models import Post, Category
-from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -155,17 +154,11 @@ def categoryDetail(request, slug):
 #     }
 #     return render(request, 'blog/categoryDetail.html', context)
 
-def handler404(request, exception=None, template_name="blog/404.html"):
-    response = render_to_response(template_name)
-    response.status_code = 404
-    return response
+def handler404(request, *args, **argv):
+    return render(request, 'blog/404.html', status=404)
 
-
-def handler500(request, exception=None, template_name="blog/500.html"):
-    response = render_to_response(template_name)
-    response.status_code = 500
-    return response
-
+def handler500(request, *args, **argv):
+    return render(request, 'blog/500.html', status=500)
 
 def post_feed(request):
     if not request.user.is_staff or not request.user.is_superuser:
