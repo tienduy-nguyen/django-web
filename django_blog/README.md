@@ -728,7 +728,7 @@
 
 ## Amazone Web Sevices
 
-Using Amazon Web Services (AWS) S3 For storing static and media files for a Django Project.
+  Using Amazon Web Services (AWS) S3 For storing static and media files for a Django Project.
 
   Create AWS account and importants steps [step by step](./DeployAWS.md)
 
@@ -757,6 +757,16 @@ Using Amazon Web Services (AWS) S3 For storing static and media files for a Djan
   AWS_DEFAULT_ACL = None
   DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
   ```
+
+### Postgres Database + AWS RDS
+
+- Create database on AWS
+  
+  
+- Connect to live AWS Database with PG admin & Django
+  
+
+
 
 ## Deploy on Heroku
 
@@ -787,3 +797,14 @@ Using Amazon Web Services (AWS) S3 For storing static and media files for a Djan
   pip3 install dj-databse-url
   ```
   [Document dj-database-url](https://pypi.org/project/dj-database-url/)
+- Git add, commit change to heroku master
+- Migrate db local to heroku
+  ```bash
+  heroku python manage.py migrate
+  ```
+- Create superuser for postgres database heroku
+  ```bash
+  heroku run python manage.py createsuperuser
+  ```
+- Database_url for config vars on heroku
+  >postgres://USERNAME:PASSWORD@databaseurlendpoint:PORT/DBNAME
