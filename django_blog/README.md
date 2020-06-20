@@ -760,13 +760,33 @@
 
 ### Postgres Database + AWS RDS
 
-- Create database on AWS
-  
-  
-- Connect to live AWS Database with PG admin & Django
-  
+- Create database
+  Check the [youtube video](https://www.youtube.com/watch?v=3HPq12w-dww&list=PL-51WBLyFTg2vW-_6XBoUpE7vpmoR3ztO&index=21)
 
+- Using database AWS on heroku
+  
+  Check the [youtube video](https://www.youtube.com/watch?v=TFFtDLZnbSs&list=PL-51WBLyFTg2vW-_6XBoUpE7vpmoR3ztO&index=24)
+  
+- Settings files
+  ```python
+  DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+  }
 
+  import dj_database_url
+  db_from_env=dj_database_url.config(conn_max_age=600,ssl_require=True)
+  DATABASES['default'].update(db_from_env)
+  ```
+- Add DATABASE_URL in config vars on heroku
+  >DATABASE_URL=postgres://USERNAME:PASSWORD@databaseurlendpoint:PORT/DBNAME
+
+  or using command line
+  ```bash
+  heroku config:set DATABASE_URL=postgres://USERNAME:PASSWORD@databaseurlendpoint:PORT/DBNAME
+  ```
 
 ## Deploy on Heroku
 
@@ -800,7 +820,7 @@
 - Git add, commit change to heroku master
 - Migrate db local to heroku
   ```bash
-  heroku python manage.py migrate
+  heroku run python manage.py migrate
   ```
 - Create superuser for postgres database heroku
   ```bash
