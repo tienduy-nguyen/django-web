@@ -1,0 +1,103 @@
+{% load static %}
+{% load replace %}
+<section id="topbar" class="p-2 topbar-container">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-2 col-xs-2 col-md-2 col-lg-2 topbar__logo">
+        <a href="{% url 'home' %}">
+          <img src=" {% static 'img/logo.png'%}" alt="">
+        </a>
+      </div>
+
+      {% if user.is_authenticated %}
+      <div class="col-sm-10 col-xs-10 col-md-10 col-lg-10 topbar__wrap">
+        <a href="#" class='topbar__search topbar__icon mr-2' id="topbar-search-icon" onclick="toggleSearchForm()">
+          <i class="fas fa-search"></i>
+        </a>
+        <form class="form-inline" id="topbar-search-form">
+          <input class="form-control mr-sm-2 py-2" type="search" placeholder="Search" aria-label="Search"
+            style="height: 30px; line-height:0px">
+        </form>
+        <a href="#" class='topbar__search topbar__icon mr-2'>
+          <i class="far fa-bookmark hide-on-mobile"></i>
+        </a>
+        <a href="#" class='topbar__notification topbar__icon mr-2'>
+          <i class="fas fa-bell"></i>
+        </a>
+        <div class="topbar__user">
+          <div class="topbar__user-show" onclick="toggleUserMenu()">
+            <div href="" class="topbar__user-link-profile">
+              <img src="{{user.profile.image.url}}" alt="" class="topbar__user-img img-fluid">
+            </div>
+          </div>
+          <label for="topbar__user-menu " class="topbar__user-overlay" onclick="toggleUserMenu(true)"></label>
+          <ul class="topbar__user-menu text-left p-0">
+            <div class="topbar__user-signed d-flex pt-3">
+              <a class="topbar__user-show ml-3" href="{% url 'profile' user.username %}">
+                <img src="{{user.profile.image.url}}" alt="" class="topbar__user-img img-fluid">
+              </a>
+              <div class="topbar__user-info-wrap flex-column ml-3 py-0">
+                <div class="font-weight-bold topbar__user-info-name">
+                  <a href="{% url 'profile' user.username %}">
+                    {% if user.first_name or user.last_name %}
+                    {{ user.first_name}} {{user.last_name}}
+                    {% else %}
+                    {{user.username}}
+                    {% endif %}
+
+
+                  </a>
+                </div>
+                <div class="topbar__user-info-email">
+                  <a class="" href="{% url 'profile' user.username %}">@{{user.email | replace:"/(?=@).+/"}}</a>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <li class=" nav-item">
+              <a class="nav-link py-1" href="{% url 'postCreate' %}">New story</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link py-1" href="">Stories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link py-1" href="{% url 'series' user.username %}">Series</a>
+            </li>
+            <hr>
+            <li class="nav-item">
+              <a class="nav-link py-1" href="">Reading List</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link py-1" href="">Following</a>
+            </li>
+            <hr>
+            <li class="nav-item">
+              <a class="nav-link py-1" href="{% url 'profile' user.username%}">Profile</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link py-1" href="">Settings</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link py-1" href="javascript:{document.getElementById('logout').submit()}">Log out</a>
+              <form action="{% url 'logout' %}" method='POST' id='logout'>
+                {% csrf_token %}
+                <input type='hidden'>
+              </form>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+      <!-- If user is not signed -->
+      {% else %}
+      <div class="topbar__wrap-no-auth col-10 col-xs-10 col-md-10 col-lg-10">
+        <div><a class=" mr-4" href="{% url 'login' %}">Sign in</a></div>
+        <a class="btn btn-success my-2 my-sm-0 py-1" href="{% url 'register' %}">Getting
+          Started</a>
+      </div>
+
+      {% endif %}
+
+    </div>
+  </div>
+</section>

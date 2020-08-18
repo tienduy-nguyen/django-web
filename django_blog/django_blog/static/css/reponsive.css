@@ -1,0 +1,29 @@
+/* Tablet */
+@media (max-width: 991px) {
+  #showcase {
+    padding-top: 4rem;
+  }
+  #showcase h1 {
+    font-size: 40px;
+  }
+  .hide-md-down {
+    display: none;
+  }
+  .hide-on-mobile-tablet {
+    display: none;
+  }
+}
+
+/* Mobile & Tablet */
+@media (max-width: 768px) {
+  .hide-on-tablet {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}

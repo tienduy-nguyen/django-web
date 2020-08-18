@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="content-section container pt-4 pb-5 ml-auto col-md-8 col-lg-4" style="min-height: 100vh;">
+  <!-- Alert -->
+  {% include 'partials/_alerts.html' %}
+  <!-- Form here -->
+  <form method='POST' enctype="multipart/form-data">
+    {% csrf_token %}
+    <a href="{% url 'postDetail' object.slug %}" class="btn btn-light mb-3">Back to this Post</a>
+    <fieldset class='form-group'>
+      <!-- <legend class='border-bottom mb-4'>Delete post</legend> -->
+      <h4 style="color:red">Are you sure you want to delete the post "{{ object.title}}"</h4>
+      <small>
+        <p class="text-muted">Slug: https://{{request.get_host}}/{{object.slug}}</p>
+      </small>
+    </fieldset>
+    <div class="form-group">
+      <button class="btn btn-outline-danger" type="submit">Yes, delete</button>
+      <a class="btn btn-outline-info" href="{% url 'postDetail' object.slug %}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock%}
