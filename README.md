@@ -13,7 +13,7 @@
 
 ## Projects
 
-|  #  | Project                                                                                      | Live Demo     |
-| :-: | :------------------------------------------------------------------------------------------- | :------------ |
-| 01  | [Estate agences](https://github.com/tienduy-nguyen/django-web/tree/master/real-estate-linux) | [In Progress]() |
-| 02  | [Dblog](https://github.com/tienduy-nguyen/django-web/tree/master/django_project) | [Live Demo](http://td-dblog.herokuapp.com/) |
+|   #   | Project                                                                                      | Live Demo       |
+| :---: | :------------------------------------------------------------------------------------------- | :-------------- |
+|  01   | [Estate agences](https://github.com/tienduy-nguyen/django-web/tree/master/real-estate-linux) | [In Progress]() |
+|  02   | [Dblog](https://github.com/tienduy-nguyen/django-web/tree/master/medium_clone)               | [Inprogress]()  |
