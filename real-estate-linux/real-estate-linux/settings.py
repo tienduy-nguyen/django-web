@@ -86,7 +86,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'estatedb',
         'USER': 'postgres',
-        'PASSWORD': env('DATABASE_PWD'),
+        'PASSWORD': 'postgres',
         'HOST': 'localhost'
     }
 }
