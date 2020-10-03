@@ -9,6 +9,9 @@ verify_ssl = true
 django = "*"
 djangorestframework = "*"
 django-rest-knox = "*"
+psycopg2 = "*"
+psycopg2-binary = "*"
+django-environ = "*"
 
 [requires]
 python_version = "3.8"
