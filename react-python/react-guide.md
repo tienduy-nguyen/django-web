@@ -152,7 +152,9 @@
   ```
   Make sure environment is active: `pipenv shell`
 
-- Create components
+- Create components : `layouts`, `leads`
+  
+  `rce, rcf`: shorcut to create class component and function components in REACT
 - Make `npm run dev` to recompile
   
   If not, we need to modify scripts in package.json with the flag --watch in "dev"
@@ -163,3 +165,5 @@
     "build": "webpack --mode production ./leadmanager/frontend/src/index.js --output ./leadmanager/frontend/static/frontend/main.js"
   },
   ```
+
+- Using Redux

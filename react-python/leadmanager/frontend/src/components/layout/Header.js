@@ -23,7 +23,7 @@ export class Header extends Component {
           <ul className='navbar-nav mr-auto'>
             <li className='nav-item active'>
               <a className='nav-link' href='#'>
-                Home <span className='sr-only'>(current)</span>
+                Home
               </a>
             </li>
             <li className='nav-item'>

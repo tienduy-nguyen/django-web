@@ -1,13 +1,26 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getLeads } from '../../actions/leads';
 
-export class Leads extends Component {
-  render() {
-    return (
-      <div>
-        <h1>Leads</h1>
-      </div>
-    );
-  }
-}
+const Leads = ({ getLeads, leads: { leads } }) => {
+  useEffect(() => {
+    getLeads();
+  }, [getLeads]);
+  return (
+    <div>
+      <h1>Leads list</h1>
+    </div>
+  );
+};
 
-export default Leads;
+Leads.propTypes = {
+  getLeads: PropTypes.func.isRequired,
+  leads: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  leads: state.leads.leads,
+});
+
+export default connect(mapStateToProps, { getLeads })(Leads);
