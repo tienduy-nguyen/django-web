@@ -10,8 +10,13 @@ export default function (state = initialState, action) {
   switch (type) {
     case Types.GET_LEADS:
       return { ...state, leads: payload };
-    case Types.GET_ERRORS:
+    case Types.LEAD_ERRORS:
       return { ...state, error: payload };
+    case Types.DELETE_LEAD:
+      return {
+        ...state,
+        leads: state.leads.filter((lead) => lead.id !== payload),
+      };
     default:
       return state;
   }

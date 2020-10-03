@@ -4,4 +4,5 @@ import leads from './leads';
 
 export default combineReducers({
   leads,
+  alert,
 });
