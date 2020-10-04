@@ -225,22 +225,23 @@
   Update in `INSTALLED_APPS` and `REST_FRAMEWORK` in `leadmanager/settings.py` file
     ```python
     # leadmanager/settings.py
-    INSTALLED_APPS = [
-      'django.contrib.admin',
-      'django.contrib.auth',
-      'django.contrib.contenttypes',
-      'django.contrib.sessions',
-      'django.contrib.messages',
-      'django.contrib.staticfiles',
-      'leads',
-      'rest_framework',
-      'frontend',
-      'knox'
+   INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'leads',
+    'rest_framework',
+    'frontend',
+    'knox',
+    'accounts',
 
-    ]
-    REST_FRAMEWORK = {
-      'DEFAULT_AUTHENTICATION_CLASSES':('knox.auth.TokenAuthentication')
-    }
+  ]
+  REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES':('knox.auth.TokenAuthentication',)
+  }
   ```
 - Run migrate
   ```bash
@@ -252,6 +253,101 @@
   $ python3 manage.py startapp  accounts
   ```
 - Create `serializers.py` file
-  ```bash
+  ```python
+  from rest_framework import serializers
+  from django.contrib.auth.models import User
+
+  # User serializer
+  class UserSerializer(serializer.ModelSerializer):
+    class Meta:
+      model = User
+      fields= ('id', 'username', 'email')
+
+
+  # Register serializer
+  class RegisterSerializer(serializers.ModelSerializer):
+    class Meta:
+      model = User
+      fields = ('id', 'username', 'email', 'password')
+      extra_kwargs={'password': {'write_only': True}}
+
+    def create(self, validated_data):
+      user = User.objects.create_user(validated_data['username'], 
+      validated_data['email'], 
+      validated_data['password'])
+
+      return user
+
+  # Login serializer
+  class LoginSerializer(serializers.Serializer):
+    username=serializers.CharField()
+    password=serializers.CharField()
+
+    def validate(self, data):
+      user = authenticate(**data)
+      if user:
+        return user
+      raise serializers.ValidationError('Incorrect credentials')
 
   ```
+- Create `accounts/api.py`
+  
+  ```python
+  # accounts/api.py
+  from rest_framework import generics, permissions
+  from rest_framework.response import Response
+  from knox.models import AuthToken
+  from .serializers import UserSerializer, RegisterSerializer
+
+  # Register api
+  class RegisterAPI(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+      serializer = self.get_serializer(data=request.data)
+      serializer.is_valid(raise_exception=True)
+      user = serializer.save()
+      return Response({
+        "user": UserSerializer(user, context=self.get_serializer_context()).data,
+        "token": AuthToken.objects.create(user)[1]
+      })
+
+
+  # Login API
+  class LoginAPI(generics.GenericAPIView):
+  serializer_class = LoginSerializer
+
+  def post(self, request, *args, **kwargs):
+    serializer = self.get_serializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    user = serializer.validated_data
+    return Response({
+      "user": UserSerializer(user, context=self.get_serializer_context()).data,
+      "token": AuthToken.objects.create(user)[1]
+    })
+
+  # Get User API
+  class UserAPI(generics.RetrieveAPIView):
+  permissions_classes = [
+    permissions.IsAuthenticated,
+  ]
+  serializer_class = UserSerializer
+
+  def get_object(self):
+    return self.request.user
+  ```
+- Create `accounts/urls.py`
+  ```python
+  from django.urls import path, include
+  from .api import RegisterAPI, LoginAPI, UserAPI
+  from knox import views as know_views
+
+  urlpatterns = [
+    path('api/auth', include('knox.urls')),
+    path('api/auth/register', RegisterAPI.as_view()),
+    path('api/auth/login', LoginAPI.as_view()),
+    path('api/auth/user', UserAPI.as_view()),
+  ]
+  ```
+  Attention for error TokenAuthen [stackoverflow](https://stackoverflow.com/questions/55668375/object-of-type-authtoken-is-not-json-serializable)
+
