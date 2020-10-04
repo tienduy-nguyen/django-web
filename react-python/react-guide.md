@@ -218,3 +218,40 @@
     def perform_create(self, serializer):
       serializer.save(owner=self.request.user)
   ```
+## Authentication module for django rest auth with django-rest-knox
+
+- Config `django-rest-knox`
+  
+  Update in `INSTALLED_APPS` and `REST_FRAMEWORK` in `leadmanager/settings.py` file
+    ```python
+    # leadmanager/settings.py
+    INSTALLED_APPS = [
+      'django.contrib.admin',
+      'django.contrib.auth',
+      'django.contrib.contenttypes',
+      'django.contrib.sessions',
+      'django.contrib.messages',
+      'django.contrib.staticfiles',
+      'leads',
+      'rest_framework',
+      'frontend',
+      'knox'
+
+    ]
+    REST_FRAMEWORK = {
+      'DEFAULT_AUTHENTICATION_CLASSES':('knox.auth.TokenAuthentication')
+    }
+  ```
+- Run migrate
+  ```bash
+  $ python3 manage.py migrate
+  ```
+## Accounts app for User auth
+- Create accounts app
+  ```bash
+  $ python3 manage.py startapp  accounts
+  ```
+- Create `serializers.py` file
+  ```bash
+
+  ```
