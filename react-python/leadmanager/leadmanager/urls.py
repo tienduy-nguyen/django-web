@@ -3,5 +3,7 @@ from django.urls import path, include
 
 
 urlpatterns = [
-   path('', include('leads.urls')), # home page
+   path('', include('frontend.urls')), #  home page react
+   path('', include('leads.urls')), # leads page api
+   path('', include('accounts.urls')), # accounts page api
 ]
