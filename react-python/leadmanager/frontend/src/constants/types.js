@@ -1,8 +1,11 @@
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
 export const GET_LEADS = 'GET_LEADS';
+export const GET_LEAD = 'GET_LEAD';
 export const DELETE_LEAD = 'DELETE_LEAD';
 export const ADD_LEAD = 'ADD_LEAD';
+export const UPDATE_LEAD = 'UPDATE_LEAD';
+export const CLEAR_LEADS = 'CLEAR_LEADS';
 export const LEAD_ERRORS = 'LEAD_ERRORS';
 export const GET_ERRORS = 'GET_ERRORS';
 export const CREATE_MESSAGE = 'CREATE_MESSAGE';
@@ -14,4 +17,3 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
-export const CLEAR_LEADS = 'CLEAR_LEADS';
