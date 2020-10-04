@@ -42,18 +42,20 @@ const Leads = ({ getLeads, deleteLead, addLead, updateLead, leads }) => {
               <td>{lead.email}</td>
               <td>{lead.message}</td>
               <td>
-                <button
-                  className='btn btn-info btn-sm'
-                  onClick={() => getLead(lead.id)}
-                >
-                  Edit
-                </button>
-                <button
-                  className='btn btn-danger btn-sm'
-                  onClick={() => deleteLead(lead.id)}
-                >
-                  Delete
-                </button>
+                <div className='ml-auto'>
+                  <button
+                    className='btn btn-info btn-sm'
+                    onClick={() => getLead(lead.id)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className='btn btn-danger btn-sm'
+                    onClick={() => deleteLead(lead.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

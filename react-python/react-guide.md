@@ -167,3 +167,54 @@
   ```
 
 - Using Redux
+
+...
+
+## Django Token Authentication
+
+- Update ower in leads models, using authentication models of django
+  ```python
+  # leads/models.py
+  from django.db import models
+  from django.contrib.auth.models import User
+
+  # Create your models here.
+  class Lead(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100, unique=True)
+    message = models.CharField(max_length=500, blank=True)
+    owner = models.ForeignKey(User, related_name="leads", on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+  ```
+- Make migration and migrate
+  ```bash
+  $ python3 manage.py makemigrations
+  $ python3 manage.py migrate
+  $ python3 manage.py runserver
+  ```
+- Update `leads/api.py`
+  ```py
+  # leads/api.py
+  from leads.models import Lead
+  from rest_framework import viewsets, permissions
+  from .serializers import LeadSerializer
+
+  # Lead Viewset
+
+  class LeadViewSet(viewsets.ModelViewSet):
+    """
+      A viewset for viewing and editing lead instances.
+    """
+    queryset = Lead.objects.all()
+    permission_classes = [
+      permissions.IsAuthenticated
+    ]
+    serializer_class = LeadSerializer
+
+    def get_queryset(self):
+      return self.request.user.leads.all()
+      
+    def perform_create(self, serializer):
+      serializer.save(owner=self.request.user)
+  ```

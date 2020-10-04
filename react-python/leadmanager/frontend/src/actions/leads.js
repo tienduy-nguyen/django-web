@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as Types from '../constants/types';
 import { setAlert } from './alert';
 import regeneratorRuntime, { async } from 'regenerator-runtime'; // To use async with webpack
+import { returnErrors } from './messages';
 
 // GET leads
 export const getLeads = () => async (dispatch) => {
@@ -13,10 +14,7 @@ export const getLeads = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
-    dispatch({
-      type: Types.LEAD_ERRORS,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
+    dispatch(returnErrors(err.response.data, err.response.status));
   }
 };
 
@@ -29,10 +27,7 @@ export const getLead = (id) => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
-    dispatch({
-      type: Types.LEAD_ERRORS,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
+    dispatch(returnErrors(err.response.data, err.response.status));
   }
 };
 
@@ -52,14 +47,7 @@ export const addLead = (formData, history) => async (dispatch) => {
     dispatch(setAlert('Lead Created', 'success'));
     history.push('/');
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
-    }
-    dispatch({
-      type: Types.LEAD_ERRORS,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
+    dispatch(returnErrors(err.response.data, err.response.status));
   }
 };
 
@@ -78,14 +66,7 @@ export const updateLead = (id, formData, history) => async (dispatch) => {
     });
     history.push('/');
   } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
-    }
-    dispatch({
-      type: Types.LEAD_ERRORS,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
+    dispatch(returnErrors(err.response.data, err.response.status));
   }
 };
 
@@ -99,9 +80,6 @@ export const deleteLead = (id) => async (dispatch) => {
     });
     dispatch(setAlert('Lead removed', 'success'));
   } catch (err) {
-    dispatch({
-      type: Types.LEAD_ERRORS,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
+    dispatch(returnErrors(err.response.data, err.response.status));
   }
 };
