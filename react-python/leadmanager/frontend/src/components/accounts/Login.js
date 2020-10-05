@@ -20,6 +20,11 @@ export const Login = ({ login, isAuthenticated }) => {
     login(username, password);
   };
 
+  // Redirect if login
+  if (isAuthenticated) {
+    return <Redirect to='/'></Redirect>;
+  }
+
   return (
     <div className='col-md-6 m-auto'>
       <div className='card card-body mt-5'>

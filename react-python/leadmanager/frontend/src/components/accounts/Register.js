@@ -22,7 +22,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (password !== password2) {
+    if (password1 !== password2) {
       setAlert('Password do not match', 'danger');
     } else {
       register({ username, email, password });

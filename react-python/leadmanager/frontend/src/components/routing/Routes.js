@@ -6,16 +6,17 @@ import NotFound from '../layout/NotFound';
 import Dashboard from '../leads/Dashboard';
 import Register from '../accounts/Register';
 import Login from '../accounts/Login';
+import PrivateRoute from '../routing/PrivateRoute';
 
 const Routes = (props) => {
   return (
     <section>
       <Switch>
-        <Route exact path='/' component={Dashboard} />
-        <Route exact path='/leads' component={Dashboard} />
-        <Route exact path='/leads/new' component={LeadForm} />
-        <Route exact path='/leads/:id' component={Lead} />
-        <Route exact path='/leads/:id/edit' component={LeadForm} />
+        <PrivateRoute exact path='/' component={Dashboard} />
+        <PrivateRoute exact path='/leads' component={Dashboard} />
+        <PrivateRoute exact path='/leads/new' component={LeadForm} />
+        <PrivateRoute exact path='/leads/:id' component={Lead} />
+        <PrivateRoute exact path='/leads/:id/edit' component={LeadForm} />
         <Route exact path='/register' component={Register} />
         <Route exact path='/login' component={Login} />
         <Route component={NotFound} />

@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from '../../actions/auth';
 
-const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
+const Navbar = ({ auth: { isAuthenticated, loading, user }, logout }) => {
   const authLinks = (
     <ul className='navbar-nav ml-auto mt-2 mt-lg-0'>
+      <a className='navbar-brand mr-3' href='/leads'>
+        Leads
+      </a>
       <span className='navbar-text mr-3'>
         <strong>{user ? `Welcome ${user.username}` : ''}</strong>
       </span>
@@ -51,7 +54,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
           <span className='navbar-toggler-icon' />
         </button>
         <div className='collapse navbar-collapse' id='navbarTogglerDemo01'>
-          <a className='navbar-brand' href='#'>
+          <a className='navbar-brand mr-3' href='/'>
             Lead Manager
           </a>
         </div>
