@@ -4,18 +4,20 @@ import Lead from '../lead/Lead';
 import LeadForm from '../lead/LeadForm';
 import NotFound from '../layout/NotFound';
 import Dashboard from '../leads/Dashboard';
-import Alert from '../layout/Alert';
+import Register from '../accounts/Register';
+import Login from '../accounts/Login';
 
 const Routes = (props) => {
   return (
-    <section className='container'>
-      <Alert></Alert>
+    <section>
       <Switch>
         <Route exact path='/' component={Dashboard} />
         <Route exact path='/leads' component={Dashboard} />
         <Route exact path='/leads/new' component={LeadForm} />
         <Route exact path='/leads/:id' component={Lead} />
         <Route exact path='/leads/:id/edit' component={LeadForm} />
+        <Route exact path='/register' component={Register} />
+        <Route exact path='/login' component={Login} />
         <Route component={NotFound} />
       </Switch>
     </section>
