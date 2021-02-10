@@ -16,5 +16,5 @@ Markdown==3.2.2
 psycopg2-binary==2.8.5
 pycodestyle==2.6.0
 pylint==2.5.3
-s3transfer==0.3.3
+s3transfer==0.3.4
 whitenoise==5.1.0
